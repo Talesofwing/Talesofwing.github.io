@@ -1,0 +1,249 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Compile HLSL with fxc | 零君</title><meta name="author" content="零君"><meta name="copyright" content="零君"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Environments:  Windows 10 DirectX 12   中文日本語HLSL的編譯主要可以通過  fxc.exe Visual Studio 動態編譯  這篇文章介紹如何用fxc.exe編譯HLSL。 fxc.exe的環境變數 在Windows 8開始，DirectX SDK已經整合到Windows SDk中。 在Windows 10中，fxc.exe可以在以下路徑找到。 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Compile HLSL with fxc">
+<meta property="og:url" content="https://0-rpg.com/2022/07/31/directx/Compile-HLSL-with-fxc/index.html">
+<meta property="og:site_name" content="零君">
+<meta property="og:description" content="Environments:  Windows 10 DirectX 12   中文日本語HLSL的編譯主要可以通過  fxc.exe Visual Studio 動態編譯  這篇文章介紹如何用fxc.exe編譯HLSL。 fxc.exe的環境變數 在Windows 8開始，DirectX SDK已經整合到Windows SDk中。 在Windows 10中，fxc.exe可以在以下路徑找到。 1">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-rpg.com/img/dx/fxc/dx_compiler.png">
+<meta property="article:published_time" content="2022-07-31T09:30:19.000Z">
+<meta property="article:modified_time" content="2023-04-29T10:09:39.539Z">
+<meta property="article:author" content="零君">
+<meta property="article:tag" content="hlsl">
+<meta property="article:tag" content="directx">
+<meta property="article:tag" content="compile">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-rpg.com/img/dx/fxc/dx_compiler.png"><link rel="shortcut icon" href="/img/icon.webp"><link rel="canonical" href="https://0-rpg.com/2022/07/31/directx/Compile-HLSL-with-fxc/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Compile HLSL with fxc',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2023-04-29 19:09:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/icon.webp" onerror="onerror=null;src='/img/miku_02_webp'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-dungeon"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-ghost"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/work/"><i class="fa-fw fas fa-gamepad"></i><span> Works</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-vr-cardboard"></i><span> Links</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/dx/fxc/dx_compiler.png')"><nav id="nav"><span id="blog-info"><a href="/" title="零君"></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-dungeon"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-ghost"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/work/"><i class="fa-fw fas fa-gamepad"></i><span> Works</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-vr-cardboard"></i><span> Links</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Compile HLSL with fxc</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-07-31T09:30:19.000Z" title="Created 2022-07-31 18:30:19">2022-07-31</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-04-29T10:09:39.539Z" title="Updated 2023-04-29 19:09:39">2023-04-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/DirectX/">DirectX</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">554</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>2min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Compile HLSL with fxc"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>Environments:</p>
+<ul>
+<li>Windows 10</li>
+<li>DirectX 12</li>
+</ul>
+</blockquote>
+<div class="tabs" id="tab"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#tab-1">中文</button></li><li class="tab"><button type="button" data-href="#tab-2">日本語</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="tab-1"><p>HLSL的編譯主要可以通過</p>
+<ul>
+<li>fxc.exe</li>
+<li>Visual Studio</li>
+<li>動態編譯</li>
+</ul>
+<p>這篇文章介紹如何用<code>fxc.exe</code>編譯HLSL。</p>
+<h3 id="fxc-exe的環境變數">fxc.exe的環境變數</h3>
+<p>在Windows 8開始，DirectX SDK已經整合到Windows SDk中。<br>
+在Windows 10中，<code>fxc.exe</code>可以在以下路徑找到。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x86</span><br></pre></td></tr></table></figure>
+<p>將路徑加入到環境變數中的<strong>Path</strong>後，在<code>cmd</code>中就可以使用。</p>
+<h3 id="開始編譯">開始編譯</h3>
+<p>在<code>cmd</code>中，輸入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Debug Mode</span><br><span class="line">fxc &quot;color.hlsl&quot; /Od /Zi /T vs_5_0 /E &quot;VS&quot; /Fo &quot;color_vs.cso&quot; /Fc &quot;color_vs.asm&quot;</span><br><span class="line">fxc &quot;color.hlsl&quot; /Od /Zi /T ps_5_0 /E &quot;PS&quot; /Fo &quot;color_ps.cso&quot; /Fc &quot;color_ps.asm&quot;</span><br><span class="line"></span><br><span class="line">// Release Mode</span><br><span class="line">fxc &quot;color.hlsl&quot; /T vs_5_0 /E &quot;VS&quot; /Fo &quot;color_vs.cso&quot; /Fc &quot;color_vs.asm&quot;</span><br><span class="line">fxc &quot;color.hlsl&quot; /T ps_5_0 /E &quot;PS&quot; /Fo &quot;color_ps.cso&quot; /Fc &quot;color_ps.asm&quot;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>參數</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/Od</td>
+<td>禁用優化</td>
+</tr>
+<tr>
+<td>/Zi</td>
+<td>開啟調試信息</td>
+</tr>
+<tr>
+<td>/T</td>
+<td>Shader Model</td>
+</tr>
+<tr>
+<td>/E</td>
+<td>Shader的入口點(Entry Point)</td>
+</tr>
+<tr>
+<td>/Fo</td>
+<td>編譯後的文件名，一般以.cso作為後綴</td>
+</tr>
+<tr>
+<td>/Fc</td>
+<td>Shader的匯編文檔</td>
+</tr>
+</tbody>
+</table>
+<p>匯編文檔的輸出可以省略。其它參數可以在官方文檔找到。</p>
+<h3 id="DX中的讀取">DX中的讀取</h3>
+<p>最後在DX程序中，讀取編譯好的<code>.cso</code>文檔，並轉換成<code>ID3DBlob</code>便可。</p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="tab-2"><p>主なHLSLのコンパイルの方法は、以下のようにする。</p>
+<ul>
+<li>fxc.exe</li>
+<li>Visual Studioに提供されたコンパイル</li>
+<li>dynamic compile (runtime)</li>
+</ul>
+<p>ここでは、<code>fxc.exe</code>でコンパイルの方法を紹介する。</p>
+<h3 id="fxc-exeの環境変数の設定">fxc.exeの環境変数の設定</h3>
+<p>Windows 8から、DirectX SDKが既にWindows SDKに含まれていた。<br>
+Windows 10では、<code>fxc.exe</code>が以下のパスで見つけることができる。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x86</span><br></pre></td></tr></table></figure>
+<p>このパスを環境変数の<strong>Path</strong>に導入し、<code>cmd</code>で使用できるようになる。</p>
+<h3 id="コンパイルスタート">コンパイルスタート</h3>
+<p><code>cmd</code>で、以下のコードをインプットする。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Debug Mode</span><br><span class="line">fxc &quot;color.hlsl&quot; /Od /Zi /T vs_5_0 /E &quot;VS&quot; /Fo &quot;color_vs.cso&quot; /Fc &quot;color_vs.asm&quot;</span><br><span class="line">fxc &quot;color.hlsl&quot; /Od /Zi /T ps_5_0 /E &quot;PS&quot; /Fo &quot;color_ps.cso&quot; /Fc &quot;color_ps.asm&quot;</span><br><span class="line"></span><br><span class="line">// Release Mode</span><br><span class="line">fxc &quot;color.hlsl&quot; /T vs_5_0 /E &quot;VS&quot; /Fo &quot;color_vs.cso&quot; /Fc &quot;color_vs.asm&quot;</span><br><span class="line">fxc &quot;color.hlsl&quot; /T ps_5_0 /E &quot;PS&quot; /Fo &quot;color_ps.cso&quot; /Fc &quot;color_ps.asm&quot;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>パラメータ</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>/Od</td>
+<td>最適化無効</td>
+</tr>
+<tr>
+<td>/Zi</td>
+<td>デバッグモード</td>
+</tr>
+<tr>
+<td>/T</td>
+<td>Shader Model</td>
+</tr>
+<tr>
+<td>/E</td>
+<td>ShaderのEntry Point</td>
+</tr>
+<tr>
+<td>/Fo</td>
+<td>コンパイルしたファイル名。拡張子は普通<code>.cso</code>にする</td>
+</tr>
+<tr>
+<td>/Fc</td>
+<td>Shaderのアセンブリ</td>
+</tr>
+</tbody>
+</table>
+<p>アセンブリのアウトプットは必要ではない。ほかのパラメータは公式サイトで調べてください。</p>
+<h3 id="DXでの読み込み">DXでの読み込み</h3>
+<p>コンパイルした後、DXアプリケーションで<code>.cso</code>を読み込んで、<code>ID3DBlob</code>を作ることです。</p><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://0-rpg.com">零君</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://0-rpg.com/2022/07/31/directx/Compile-HLSL-with-fxc/">https://0-rpg.com/2022/07/31/directx/Compile-HLSL-with-fxc/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/hlsl/">hlsl</a><a class="post-meta__tags" href="/tags/directx/">directx</a><a class="post-meta__tags" href="/tags/compile/">compile</a></div><div class="post_share"><div class="social-share" data-image="/img/dx/fxc/dx_compiler.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/07/15/Notice-My-Blog/" title="Notice - My Blog"><img class="cover" src="/img/my_desktop.webp" onerror="onerror=null;src='/img/miku_03.webp'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">Notice - My Blog</div></div></a></div><div class="next-post pull-right"><a href="/2022/08/05/directx/DirectX-12-Multisampling-MSAA/" title="DirectX 12 - Multisampling(MSAA)"><img class="cover" src="/img/dx/msaa/msaa_box.png" onerror="onerror=null;src='/img/miku_03.webp'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">DirectX 12 - Multisampling(MSAA)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/09/04/directx/DirectX-12-Descriptor-RootSignature/" title="DirectX 12 - Descriptor &amp; RootSignature"><img class="cover" src="/img/dx/descriptor/cover.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-04</div><div class="title">DirectX 12 - Descriptor &amp; RootSignature</div></div></a></div><div><a href="/2022/08/05/directx/DirectX-12-Multisampling-MSAA/" title="DirectX 12 - Multisampling(MSAA)"><img class="cover" src="/img/dx/msaa/msaa_box.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-05</div><div class="title">DirectX 12 - Multisampling(MSAA)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/icon.webp" onerror="this.onerror=null;this.src='/img/miku_02_webp'" alt="avatar"/></div><div class="author-info__name">零君</div><div class="author-info__description">A game Developer</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Talesofwing" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/29/VSCode-extensions/" title="VSCode extensions"><img src="/img/vscode.jpg" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="VSCode extensions"/></a><div class="content"><a class="title" href="/2023/04/29/VSCode-extensions/" title="VSCode extensions">VSCode extensions</a><time datetime="2023-04-29T10:36:15.000Z" title="Created 2023-04-29 19:36:15">2023-04-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/02/cg/ray-tracing/Ray-Tracing-Ray-Generation/" title="Ray-Tracing: Ray Generation"><img src="/img/cg/ray_tracing/cover.webp" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="Ray-Tracing: Ray Generation"/></a><div class="content"><a class="title" href="/2022/10/02/cg/ray-tracing/Ray-Tracing-Ray-Generation/" title="Ray-Tracing: Ray Generation">Ray-Tracing: Ray Generation</a><time datetime="2022-10-02T10:35:50.000Z" title="Created 2022-10-02 19:35:50">2022-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/04/directx/DirectX-12-Descriptor-RootSignature/" title="DirectX 12 - Descriptor &amp; RootSignature"><img src="/img/dx/descriptor/cover.png" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="DirectX 12 - Descriptor &amp; RootSignature"/></a><div class="content"><a class="title" href="/2022/09/04/directx/DirectX-12-Descriptor-RootSignature/" title="DirectX 12 - Descriptor &amp; RootSignature">DirectX 12 - Descriptor &amp; RootSignature</a><time datetime="2022-09-04T10:35:40.000Z" title="Created 2022-09-04 19:35:40">2022-09-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/28/cg/Light-Falloff-Point-Light/" title="Light Falloff(Point Light)"><img src="/img/cg/light_falloff/cover.png" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="Light Falloff(Point Light)"/></a><div class="content"><a class="title" href="/2022/08/28/cg/Light-Falloff-Point-Light/" title="Light Falloff(Point Light)">Light Falloff(Point Light)</a><time datetime="2022-08-28T10:35:27.000Z" title="Created 2022-08-28 19:35:27">2022-08-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/21/cg/lighting-distance/" title="照射到物體表面時光線間的距離推導"><img src="/img/cg/lighting_distance/02.png" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="照射到物體表面時光線間的距離推導"/></a><div class="content"><a class="title" href="/2022/08/21/cg/lighting-distance/" title="照射到物體表面時光線間的距離推導">照射到物體表面時光線間的距離推導</a><time datetime="2022-08-21T10:05:18.000Z" title="Created 2022-08-21 19:05:18">2022-08-21</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/footer_img.webp')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 零君</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, here are some articles that may help you.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

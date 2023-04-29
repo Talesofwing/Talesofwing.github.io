@@ -1,0 +1,205 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Introducation of Supersampling Anti-Aliasing(SSAA) | 零君</title><meta name="author" content="零君"><meta name="copyright" content="零君"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="中文日本語前言 SSAA(Supersampling Anti-Aliasing)是通過加大分辨率，使取樣率提高的一種反鋸齒技術。以4xSSAA為例，屏幕像素被放大4倍進行取樣。  所有着色完成後，計算4個像素的平均值，賦值給原像素。 pn&#x3D;∑i&#x3D;04Pi4p_{n} &#x3D; \frac{\sum_{i&#x3D;0}^4 P_{i}}{4} pn​&#x3D;4∑i&#x3D;04​Pi​​ 鋸齒 因為像素的取樣率不足，導致不能">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introducation of Supersampling Anti-Aliasing(SSAA)">
+<meta property="og:url" content="https://0-rpg.com/2022/08/05/cg/anti-aliasing/Introducation-of-Supersampling-Anti-Aliasing-SSAA/index.html">
+<meta property="og:site_name" content="零君">
+<meta property="og:description" content="中文日本語前言 SSAA(Supersampling Anti-Aliasing)是通過加大分辨率，使取樣率提高的一種反鋸齒技術。以4xSSAA為例，屏幕像素被放大4倍進行取樣。  所有着色完成後，計算4個像素的平均值，賦值給原像素。 pn&#x3D;∑i&#x3D;04Pi4p_{n} &#x3D; \frac{\sum_{i&#x3D;0}^4 P_{i}}{4} pn​&#x3D;4∑i&#x3D;04​Pi​​ 鋸齒 因為像素的取樣率不足，導致不能">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://0-rpg.com/img/cg/ssaa/cover.png">
+<meta property="article:published_time" content="2022-08-05T10:05:00.000Z">
+<meta property="article:modified_time" content="2023-04-29T10:47:48.472Z">
+<meta property="article:author" content="零君">
+<meta property="article:tag" content="cg">
+<meta property="article:tag" content="anti-aliasing">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://0-rpg.com/img/cg/ssaa/cover.png"><link rel="shortcut icon" href="/img/icon.webp"><link rel="canonical" href="https://0-rpg.com/2022/08/05/cg/anti-aliasing/Introducation-of-Supersampling-Anti-Aliasing-SSAA/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: 'days',
+  dateSuffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: false,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Introducation of Supersampling Anti-Aliasing(SSAA)',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2023-04-29 19:47:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/icon.webp" onerror="onerror=null;src='/img/miku_02_webp'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-dungeon"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-ghost"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/work/"><i class="fa-fw fas fa-gamepad"></i><span> Works</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-vr-cardboard"></i><span> Links</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url('/img/cg/ssaa/cover.png')"><nav id="nav"><span id="blog-info"><a href="/" title="零君"></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-dungeon"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-ghost"></i><span> About</span></a></div><div class="menus_item"><a class="site-page" href="/work/"><i class="fa-fw fas fa-gamepad"></i><span> Works</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-vr-cardboard"></i><span> Links</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Introducation of Supersampling Anti-Aliasing(SSAA)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-08-05T10:05:00.000Z" title="Created 2022-08-05 19:05:00">2022-08-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-04-29T10:47:48.472Z" title="Updated 2023-04-29 19:47:48">2023-04-29</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Computer-Graphics/">Computer Graphics</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">Word count:</span><span class="word-count">529</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">Reading time:</span><span>2min</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Introducation of Supersampling Anti-Aliasing(SSAA)"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><div class="tabs" id="tab"><ul class="nav-tabs"><li class="tab active"><button type="button" data-href="#tab-1">中文</button></li><li class="tab"><button type="button" data-href="#tab-2">日本語</button></li></ul><div class="tab-contents"><div class="tab-item-content active" id="tab-1"><h4 id="前言">前言</h4>
+<p>SSAA(Supersampling Anti-Aliasing)是通過加大分辨率，使取樣率提高的一種反鋸齒技術。以4xSSAA為例，屏幕像素被放大4倍進行取樣。</p>
+<p><img src="/img/cg/ssaa/01.png" alt="4x SSAA"></p>
+<p>所有着色完成後，計算4個像素的平均值，賦值給原像素。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>p</mi><mi>n</mi></msub><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mn>4</mn></munderover><msub><mi>P</mi><mi>i</mi></msub></mrow><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">p_{n} = \frac{\sum_{i=0}^4 P_{i}}{4}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3297em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6437em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6897em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<h4 id="鋸齒">鋸齒</h4>
+<p>因為像素的取樣率不足，導致不能完整地描述三角形。</p>
+<p><img src="/img/cg/ssaa/02.png" alt="4x SSAA"></p>
+<p>通過增大分辦率(軟件形式)，提高像素的取樣率，能更好地描述三角形。</p>
+<p><img src="/img/cg/ssaa/03.png" alt="4x SSAA"></p>
+<p>實際的顯示中，因為邊緣被模糊了，所以鋸齒感會降低。</p>
+<h4 id="SSAA著色">SSAA著色</h4>
+<p>原本的著色是針對一個像素的，如下圖。</p>
+<p><img src="/img/cg/ssaa/04.png" alt="origin"></p>
+<div class="img-alt is-center">origin</div>
+<p>SSAA是逐像素計算的，每一個像素都需要執行着色運算(與MSAA不同之處)。當着色結束後，求4個像素的平均值，賦給原像素。下圖中的結果為</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mi>i</mi><mi>x</mi><mi>e</mi><mi>l</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mi>n</mi></mrow><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">pixel = \frac{2green}{4}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">ree</span><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p><img src="/img/cg/ssaa/05.png" alt="a triangle"></p>
+<div class="img-alt is-center">a triangle</div>
+<p>因為着色時會進行深度測試(depth testing)，存在多個三角形時，會根據深度值進行屏蔽。下圖中的結果為</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mi>i</mi><mi>x</mi><mi>e</mi><mi>l</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>y</mi><mi>e</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>w</mi><mo>+</mo><mn>1</mn><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mi>n</mi></mrow><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">pixel = \frac {2yellow + 1green}{4}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal">ye</span><span class="mord mathnormal" style="margin-right:0.01968em;">ll</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">ree</span><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p><img src="/img/cg/ssaa/06.png" alt="more triangle"></p>
+<div class="img-alt is-center">more triangle</div>
+<h4 id="問題">問題</h4>
+<ol>
+<li>4倍的存儲空間(渲染貼圖&amp;深度貼圖)</li>
+<li>4倍的着色計算</li>
+</ol><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div><div class="tab-item-content" id="tab-2"><h4 id="前書き">前書き</h4>
+<p>SSAA(Supersampling Anti-Aliasing)とは解像度を増加し、サンプリング周波数を増大するアンチエイリアス技術である。4xSSAAを例とし、解像度を4倍増加して、サンプリングを行う。</p>
+<p><img src="/img/cg/ssaa/01.png" alt="4x SSAA"></p>
+<p>シェーディングが終わと、元ピクセルの値は4つのピクセルの平均である。</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>p</mi><mi>n</mi></msub><mo>=</mo><mfrac><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mn>4</mn></munderover><msub><mi>P</mi><mi>i</mi></msub></mrow><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">p_{n} = \frac{\sum_{i=0}^4 P_{i}}{4}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3297em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.6437em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.6897em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:0em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.954em;"><span style="top:-2.4003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2997em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<h4 id="アンチエイリアス">アンチエイリアス</h4>
+<p>サンプリング周波数が足りないため、三角形を完璧に表現できない。</p>
+<p><img src="/img/cg/ssaa/02.png" alt="4x SSAA"></p>
+<p>解像度を増加することにより(ソフトウェア側)、サンプリング周波数を上げ、三角形の表現がよくなる。</p>
+<p><img src="/img/cg/ssaa/03.png" alt="4x SSAA"></p>
+<h4 id="SSAAのシェーディンググ">SSAAのシェーディンググ</h4>
+<p>原画像のサンプリングでは、次の図のように1か所しかシェーディングできない。</p>
+<p><img src="/img/cg/ssaa/04.png" alt="origin"></p>
+<div class="img-alt is-center">origin</div>
+<p>SSAAは<code>per pixel</code>で、ピクセルごとにシェーディングを行う(MSAAとの違い)。シェーディングが終わると、4つのピクセルの平均値を元ピクセルの値にする。下図の結果は</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mi>i</mi><mi>x</mi><mi>e</mi><mi>l</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mi>n</mi></mrow><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">pixel = \frac{2green}{4}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">ree</span><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p><img src="/img/cg/ssaa/05.png" alt="a triangle"></p>
+<div class="img-alt is-center">a triangle</div>
+<p>シェーディングする時、深度テストを行うため、複数の三角形が存在する場合としても、正しい結果が出る。下図の結果は</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mi>i</mi><mi>x</mi><mi>e</mi><mi>l</mi><mo>=</mo><mfrac><mrow><mn>2</mn><mi>y</mi><mi>e</mi><mi>l</mi><mi>l</mi><mi>o</mi><mi>w</mi><mo>+</mo><mn>1</mn><mi>g</mi><mi>r</mi><mi>e</mi><mi>e</mi><mi>n</mi></mrow><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">pixel = \frac {2yellow + 1green}{4}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span><span class="mord mathnormal">i</span><span class="mord mathnormal">x</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0574em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span><span class="mord mathnormal">ye</span><span class="mord mathnormal" style="margin-right:0.01968em;">ll</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord">1</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">ree</span><span class="mord mathnormal">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+<p><img src="/img/cg/ssaa/06.png" alt="more triangle"></p>
+<div class="img-alt is-center">more triangle</div>
+<h4 id="問題">問題</h4>
+<ol>
+<li>4倍のストレージ(RenderTarget Texture &amp; Depth Texture)</li>
+<li>4倍の計算時間</li>
+</ol><button type="button" class="tab-to-top" aria-label="scroll to top"><i class="fas fa-arrow-up"></i></button></div></div></div>
+<h4 id="References">References</h4>
+<p><a href="https://0-rpg.com/2022/08/05/cg/Introducation-of-MultisamplingAnti-Aliasing-MSAA/">Introduction of Multisampling(MSAA)</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="https://0-rpg.com">零君</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://0-rpg.com/2022/08/05/cg/anti-aliasing/Introducation-of-Supersampling-Anti-Aliasing-SSAA/">https://0-rpg.com/2022/08/05/cg/anti-aliasing/Introducation-of-Supersampling-Anti-Aliasing-SSAA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/cg/">cg</a><a class="post-meta__tags" href="/tags/anti-aliasing/">anti-aliasing</a></div><div class="post_share"><div class="social-share" data-image="/img/cg/ssaa/cover.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/08/05/directx/DirectX-12-Multisampling-MSAA/" title="DirectX 12 - Multisampling(MSAA)"><img class="cover" src="/img/dx/msaa/msaa_box.png" onerror="onerror=null;src='/img/miku_03.webp'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">DirectX 12 - Multisampling(MSAA)</div></div></a></div><div class="next-post pull-right"><a href="/2022/08/05/cg/anti-aliasing/Introduction-of-Multisampling-MSAA/" title="Introduction of Multisampling(MSAA)"><img class="cover" src="/img/cg/msaa/cover.png" onerror="onerror=null;src='/img/miku_03.webp'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Introduction of Multisampling(MSAA)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/08/05/cg/anti-aliasing/Introduction-of-Multisampling-MSAA/" title="Introduction of Multisampling(MSAA)"><img class="cover" src="/img/cg/msaa/cover.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-05</div><div class="title">Introduction of Multisampling(MSAA)</div></div></a></div><div><a href="/2022/10/02/cg/ray-tracing/Ray-Tracing-Ray-Generation/" title="Ray-Tracing: Ray Generation"><img class="cover" src="/img/cg/ray_tracing/cover.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-02</div><div class="title">Ray-Tracing: Ray Generation</div></div></a></div><div><a href="/2022/08/28/cg/Light-Falloff-Point-Light/" title="Light Falloff(Point Light)"><img class="cover" src="/img/cg/light_falloff/cover.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-28</div><div class="title">Light Falloff(Point Light)</div></div></a></div><div><a href="/2022/08/21/cg/lighting-distance/" title="照射到物體表面時光線間的距離推導"><img class="cover" src="/img/cg/lighting_distance/02.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-21</div><div class="title">照射到物體表面時光線間的距離推導</div></div></a></div><div><a href="/2022/08/05/directx/DirectX-12-Multisampling-MSAA/" title="DirectX 12 - Multisampling(MSAA)"><img class="cover" src="/img/dx/msaa/msaa_box.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-05</div><div class="title">DirectX 12 - Multisampling(MSAA)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/icon.webp" onerror="this.onerror=null;this.src='/img/miku_02_webp'" alt="avatar"/></div><div class="author-info__name">零君</div><div class="author-info__description">A game Developer</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">13</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Talesofwing" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/04/29/VSCode-extensions/" title="VSCode extensions"><img src="/img/vscode.jpg" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="VSCode extensions"/></a><div class="content"><a class="title" href="/2023/04/29/VSCode-extensions/" title="VSCode extensions">VSCode extensions</a><time datetime="2023-04-29T10:36:15.000Z" title="Created 2023-04-29 19:36:15">2023-04-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/10/02/cg/ray-tracing/Ray-Tracing-Ray-Generation/" title="Ray-Tracing: Ray Generation"><img src="/img/cg/ray_tracing/cover.webp" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="Ray-Tracing: Ray Generation"/></a><div class="content"><a class="title" href="/2022/10/02/cg/ray-tracing/Ray-Tracing-Ray-Generation/" title="Ray-Tracing: Ray Generation">Ray-Tracing: Ray Generation</a><time datetime="2022-10-02T10:35:50.000Z" title="Created 2022-10-02 19:35:50">2022-10-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/04/directx/DirectX-12-Descriptor-RootSignature/" title="DirectX 12 - Descriptor &amp; RootSignature"><img src="/img/dx/descriptor/cover.png" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="DirectX 12 - Descriptor &amp; RootSignature"/></a><div class="content"><a class="title" href="/2022/09/04/directx/DirectX-12-Descriptor-RootSignature/" title="DirectX 12 - Descriptor &amp; RootSignature">DirectX 12 - Descriptor &amp; RootSignature</a><time datetime="2022-09-04T10:35:40.000Z" title="Created 2022-09-04 19:35:40">2022-09-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/28/cg/Light-Falloff-Point-Light/" title="Light Falloff(Point Light)"><img src="/img/cg/light_falloff/cover.png" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="Light Falloff(Point Light)"/></a><div class="content"><a class="title" href="/2022/08/28/cg/Light-Falloff-Point-Light/" title="Light Falloff(Point Light)">Light Falloff(Point Light)</a><time datetime="2022-08-28T10:35:27.000Z" title="Created 2022-08-28 19:35:27">2022-08-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/21/cg/lighting-distance/" title="照射到物體表面時光線間的距離推導"><img src="/img/cg/lighting_distance/02.png" onerror="this.onerror=null;this.src='/img/miku_03.webp'" alt="照射到物體表面時光線間的距離推導"/></a><div class="content"><a class="title" href="/2022/08/21/cg/lighting-distance/" title="照射到物體表面時光線間的距離推導">照射到物體表面時光線間的距離推導</a><time datetime="2022-08-21T10:05:18.000Z" title="Created 2022-08-21 19:05:18">2022-08-21</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/footer_img.webp')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 零君</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, here are some articles that may help you.</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"></div><div id="rightside-config-show"><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">Search</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  Loading the Database</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
