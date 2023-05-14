@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>VSCode with EditorConfig</title>
+      <link href="/2023/05/13/VSCode-with-EditorConfig/"/>
+      <url>/2023/05/13/VSCode-with-EditorConfig/</url>
+      
+        <content type="html"><![CDATA[<h3 id="What-is-EditorConfig">What is EditorConfig?</h3><p><a href="https://editorconfig.org/">EditorConfig</a> helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs. The EditorConfig project consists of a file format for defining coding styles and a collection of text editor plugins that enable editors to read the file format and adhere to defined styles. EditorConfig files are easily readable and they work nicely with version control systems. <strong>(Excerpt from official documentation)</strong></p><h3 id="Using">Using</h3><ol><li><p>Install EditorConfig<br><img src="/img/vscode_with_editorconfig/01.png" alt="01"></p></li><li><p>Create a <code>.editorconfig</code> file in the root directory of the project<br><img src="/img/vscode_with_editorconfig/02.png" alt="02"></p></li><li><p>Check the <code>Enable Editor Config Support</code><br><img src="/img/vscode_with_editorconfig/03.png" alt="03"></p></li><li><p>Add coding rules<br>Refer to the <a href="https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/csharp-formatting-options">official documentation</a>.</p> <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">root = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[*]</span><br><span class="line">end_of_line = crlf</span><br><span class="line">insert_final_newline = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">[*.cs]</span><br><span class="line">indent_style = space</span><br><span class="line">indent_size = <span class="number">4</span></span><br><span class="line"><span class="meta">#tab_width = 4</span></span><br><span class="line">charset = utf<span class="number">-8</span>-bom</span><br><span class="line">trim_trailing_whitespace = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">dotnet_sort_system_directives_first = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure></li></ol><h3 id="Other">Other</h3><ul><li>Check the <code>Organize Imports On Format</code> to sort <code>using</code>.<br><img src="/img/vscode_with_editorconfig/04.png" alt="04"></li></ul><h3 id="References">References</h3><ol><li><a href="https://www.neputa-note.net/2020/10/vscode-editorconfig.html">editorconfig for VSCode でコーディングルールを 統一する【C#】</a></li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> vscode </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Graphics Programmer Roadmap</title>
       <link href="/2023/05/05/Graphics-Programmer-Roadmap/"/>
       <url>/2023/05/05/Graphics-Programmer-Roadmap/</url>
@@ -29,12 +48,6 @@
       
         <content type="html"><![CDATA[<h3 id="Common">Common</h3><table><thead><tr><th>Name</th><th>Desc</th></tr></thead><tbody><tr><td>C/C++</td><td>C/C++ programming extension</td></tr><tr><td>C#</td><td>C# programming extension</td></tr><tr><td>background</td><td>VSCode’s background</td></tr><tr><td>Material Icon Theme</td><td>Design Icons for VSCode</td></tr><tr><td>indent-rainbow</td><td>Makes indentation easier to read</td></tr><tr><td>Markdown Preview Github Styling</td><td>Markdown preview</td></tr><tr><td>Gitlens</td><td>Git tool</td></tr><tr><td>EditorConfig for VSCode</td><td>EditorConfig support for VSCode</td></tr><tr><td>Todo Tree</td><td>Customise the style to display and locate TODOs</td></tr></tbody></table><h3 id="Unity">Unity</h3><table><thead><tr><th>Name</th><th>Desc</th></tr></thead><tbody><tr><td>eppz!</td><td>C# theme for Unity</td></tr><tr><td>Unity3D Meta Files Watcher</td><td>Automatically modifies <code>.meta</code> files in VSCode</td></tr><tr><td>Unity Code Snippets</td><td>Snipptes for Unity3D development</td></tr></tbody></table>]]></content>
       
-      
-      <categories>
-          
-          <category> VSCode </category>
-          
-      </categories>
       
       
         <tags>
