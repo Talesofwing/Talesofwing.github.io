@@ -1,0 +1,906 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  How each of Mio's moods, faces and motions is performed on the rig. Engine data only:
+  nothing here is sent to the LLM. What each mood and motion MEANS is described to the model in
+  mio.xml, under the same id - the loader warns if the two files disagree.
+-->
+<live2d>
+  <persona id="outer">
+    <!-- Only physics INPUTS take effect on this rig. Body, arms, ears, ahoge, hair and ribbons are
+         physics outputs at full weight and get recomputed from the head angles, ParamBreath,
+         Param194 (screen distance), ParamBrowRY and the ear drivers every frame, so:
+           ears up / flat  -> ParamBrowRY -1 / +1 (both ears; the brows themselves are hidden
+                              under the fringe, and the other brow parameters draw nothing)
+           ear flick       -> Param198 (right ear), Param158-160 (left ear)
+           body, arms      -> follow ParamAngleX/Y/Z, ParamBreath and Param194
+         The face:
+           eyes            -> ParamEyeLOpen/ROpen (0 = closed, curved like a smile), Param2
+                              (+1 wide and round, -1 narrowed and sharp), ParamEyeBallX/Y
+           mouth           -> ParamMouthForm (+1 smile, -0.4 flat, -1 with Param10 an ω cat
+                              mouth), Param6 (pressed, pouting lips; with a little
+                              ParamMouthOpenY, gritted teeth), ParamMouthOpenY
+           marks           -> Param143 blush, Param192 anger vein, Param193 question mark,
+                              Param14 dark shadow over the eyes
+         ParamA/I/U/E/O are the lip sync's vowel shapes: never used here. -->
+
+    <!-- Expressions: the face she makes while saying a line. Held values override the rig, so a
+         face leaves the eyes open (no blinking) unless it needs them otherwise, and only sets how
+         far the mouth is open at least (the lip sync still talks through it). Each mood level
+         names one; it stays until the next reply, dropping only its mouth-open, eye-open and gaze
+         values a moment after she finishes speaking. -->
+    <expression id="smile">
+      <pose id="ParamMouthForm" value="0.8" />
+      <pose id="Param143" value="0.15" />
+    </expression>
+    <expression id="happy">
+      <pose id="ParamEyeLOpen" value="0.55" />
+      <pose id="ParamEyeROpen" value="0.55" />
+      <pose id="ParamMouthOpenY" value="0.45" />
+      <pose id="ParamMouthForm" value="1" />
+      <pose id="Param143" value="0.35" />
+    </expression>
+    <expression id="overjoyed">
+      <pose id="ParamEyeLOpen" value="0" />
+      <pose id="ParamEyeROpen" value="0" />
+      <pose id="ParamMouthOpenY" value="0.6" />
+      <pose id="ParamMouthForm" value="1" />
+      <pose id="Param143" value="0.5" />
+    </expression>
+    <expression id="smug">
+      <pose id="Param2" value="-0.6" />
+      <pose id="ParamEyeLOpen" value="0.75" />
+      <pose id="ParamEyeROpen" value="0.75" />
+      <pose id="ParamEyeBallX" value="0.45" />
+      <pose id="ParamMouthForm" value="0.8" />
+    </expression>
+    <expression id="wink">
+      <pose id="ParamEyeLOpen" value="0" />
+      <pose id="ParamEyeROpen" value="1" />
+      <pose id="ParamMouthForm" value="1" />
+      <pose id="ParamMouthOpenY" value="0.3" />
+      <pose id="Param143" value="0.3" />
+    </expression>
+    <expression id="shy">
+      <pose id="Param143" value="0.6" />
+      <pose id="ParamEyeLOpen" value="0.8" />
+      <pose id="ParamEyeROpen" value="0.8" />
+      <pose id="ParamEyeBallX" value="-0.3" />
+      <pose id="ParamEyeBallY" value="-0.45" />
+      <pose id="ParamMouthForm" value="0.25" />
+    </expression>
+    <expression id="flustered">
+      <pose id="Param143" value="1" />
+      <pose id="Param2" value="0.6" />
+      <pose id="ParamMouthOpenY" value="0.25" />
+      <pose id="ParamMouthForm" value="-0.6" />
+      <pose id="Param10" value="0.5" />
+    </expression>
+    <expression id="curious">
+      <pose id="Param2" value="0.45" />
+      <pose id="ParamEyeBallY" value="0.15" />
+      <pose id="ParamMouthOpenY" value="0.12" />
+      <pose id="ParamMouthForm" value="0.1" />
+    </expression>
+    <expression id="confused">
+      <pose id="Param193" value="1" />
+      <pose id="Param2" value="0.15" />
+      <pose id="ParamEyeBallX" value="0.25" />
+      <pose id="ParamEyeBallY" value="0.3" />
+      <pose id="ParamMouthForm" value="-0.35" />
+    </expression>
+    <expression id="surprised">
+      <pose id="Param2" value="1" />
+      <pose id="ParamMouthOpenY" value="0.55" />
+      <pose id="ParamMouthForm" value="0.2" />
+    </expression>
+    <expression id="shocked">
+      <pose id="Param2" value="1" />
+      <pose id="ParamMouthOpenY" value="0.9" />
+      <pose id="ParamMouthForm" value="-0.5" />
+    </expression>
+    <expression id="sad">
+      <pose id="Param2" value="0.25" />
+      <pose id="ParamEyeLOpen" value="0.7" />
+      <pose id="ParamEyeROpen" value="0.7" />
+      <pose id="ParamEyeBallY" value="-0.6" />
+      <pose id="ParamMouthOpenY" value="0.08" />
+      <pose id="ParamMouthForm" value="-0.8" />
+    </expression>
+    <expression id="teary">
+      <pose id="Param2" value="0.55" />
+      <pose id="ParamEyeLOpen" value="0.6" />
+      <pose id="ParamEyeROpen" value="0.6" />
+      <pose id="ParamEyeBallY" value="-0.7" />
+      <pose id="ParamMouthOpenY" value="0.2" />
+      <pose id="ParamMouthForm" value="-0.9" />
+      <pose id="Param143" value="0.4" />
+    </expression>
+    <expression id="annoyed">
+      <pose id="Param2" value="-0.9" />
+      <pose id="ParamEyeLOpen" value="0.8" />
+      <pose id="ParamEyeROpen" value="0.8" />
+      <pose id="ParamEyeBallX" value="0.45" />
+      <pose id="ParamMouthForm" value="-0.45" />
+      <pose id="Param6" value="0.4" />
+    </expression>
+    <expression id="angry">
+      <pose id="Param192" value="1" />
+      <pose id="Param2" value="-1" />
+      <pose id="ParamEyeLOpen" value="0.8" />
+      <pose id="ParamEyeROpen" value="0.8" />
+      <pose id="Param6" value="0.7" />
+      <pose id="ParamMouthOpenY" value="0.3" />
+      <pose id="ParamMouthForm" value="-0.7" />
+    </expression>
+    <!-- Furious in Mio's way: cheeks puffed and red, lips pushed out, looking away. -->
+    <expression id="pout">
+      <pose id="Param192" value="1" />
+      <pose id="Param6" value="1" />
+      <pose id="Param143" value="0.6" />
+      <pose id="Param2" value="-0.6" />
+      <pose id="ParamEyeBallX" value="-0.5" />
+      <pose id="ParamMouthForm" value="-0.8" />
+    </expression>
+    <expression id="sulk">
+      <pose id="Param6" value="0.8" />
+      <pose id="Param143" value="0.2" />
+      <pose id="ParamEyeBallX" value="-0.45" />
+      <pose id="ParamEyeBallY" value="-0.25" />
+      <pose id="ParamMouthForm" value="-0.6" />
+    </expression>
+    <expression id="gloomy">
+      <pose id="Param14" value="1" />
+      <pose id="Param2" value="-0.5" />
+      <pose id="ParamEyeLOpen" value="0.75" />
+      <pose id="ParamEyeROpen" value="0.75" />
+      <pose id="ParamEyeBallY" value="-0.1" />
+      <pose id="ParamMouthForm" value="0.25" />
+    </expression>
+    <expression id="tired">
+      <pose id="Param2" value="-0.4" />
+      <pose id="ParamEyeLOpen" value="0.6" />
+      <pose id="ParamEyeROpen" value="0.6" />
+      <pose id="ParamEyeBallY" value="-0.2" />
+      <pose id="ParamMouthForm" value="0.1" />
+    </expression>
+    <expression id="sleepy">
+      <pose id="ParamEyeLOpen" value="0.15" />
+      <pose id="ParamEyeROpen" value="0.15" />
+      <pose id="ParamEyeBallY" value="-0.5" />
+      <pose id="ParamMouthForm" value="-0.3" />
+      <pose id="ParamBrowRY" value="1" />
+    </expression>
+    <expression id="proud">
+      <pose id="Param2" value="-0.3" />
+      <pose id="ParamEyeLOpen" value="0.7" />
+      <pose id="ParamEyeROpen" value="0.7" />
+      <pose id="ParamMouthForm" value="0.9" />
+    </expression>
+    <!-- Hand up to her cap (the arm the artist's 敬礼 expression raises) with a bright grin. -->
+    <expression id="salute">
+      <pose id="Param97" value="1" />
+      <pose id="Param74" value="1" />
+      <pose id="Param2" value="0.3" />
+      <pose id="ParamMouthForm" value="0.8" />
+    </expression>
+    <expression id="tender">
+      <pose id="Param2" value="-0.1" />
+      <pose id="ParamEyeLOpen" value="0.65" />
+      <pose id="ParamEyeROpen" value="0.65" />
+      <pose id="ParamMouthForm" value="0.75" />
+      <pose id="Param143" value="0.4" />
+    </expression>
+    <expression id="adoring">
+      <pose id="ParamEyeLOpen" value="0" />
+      <pose id="ParamEyeROpen" value="0" />
+      <pose id="ParamMouthForm" value="1" />
+      <pose id="Param143" value="0.7" />
+    </expression>
+    <expression id="worried">
+      <pose id="Param2" value="0.25" />
+      <pose id="ParamEyeBallY" value="-0.15" />
+      <pose id="ParamMouthOpenY" value="0.15" />
+      <pose id="ParamMouthForm" value="-0.7" />
+    </expression>
+    <expression id="anxious">
+      <pose id="Param2" value="0.5" />
+      <pose id="ParamEyeBallX" value="-0.3" />
+      <pose id="ParamMouthOpenY" value="0.25" />
+      <pose id="ParamMouthForm" value="-0.9" />
+      <pose id="Param143" value="0.15" />
+    </expression>
+
+    <!-- Motions: one-off gestures the LLM asks for by name, played once on top of everything. -->
+    <!-- Waves hello: the wave arm swaps in lowered (Param86 -1) and lifts, Param96 drives the
+         forearm and fingers through physics, with a smile, ears up and a little hop. -->
+    <motion id="greet">
+      <track id="Param97" times="0 0.1 2.55 2.65" values="0 1 1 0" />
+      <track id="Param85" times="0 0.1 2.55 2.65" values="0 1 1 0" />
+      <track id="Param86" times="0 0.1 0.4 2.2 2.55" values="-1 -1 0 0 -1" />
+      <track id="Param87" times="0 0.45 0.75 1.05 1.35 1.65 1.95 2.25" values="0 -0.4 0.4 -0.4 0.4 -0.4 0.25 0" />
+      <track id="Param96" times="0 0.5 0.8 1.1 1.4 1.7 2 2.3" values="0 1 -1 1 -1 1 -0.6 0" />
+      <track id="ParamAngleZ" times="0 0.4 2.2 2.7" values="0 -7 -7 0" />
+      <track id="ParamAngleY" times="0 0.15 0.35 2.7" values="0 5 2 0" />
+      <track id="ParamBrowRY" times="0 0.2 2.3 2.7" values="0 -0.8 -0.8 0" />
+      <track id="ParamMouthForm" times="0 0.3 2.4 2.7" values="0 0.8 0.8 0" />
+      <track id="Param7" times="0 0.12 0.3" values="0 0.5 0" />
+      <track id="Param_Angle_Rotation19" times="0 0.6 1.2 1.8 2.4" values="0 14 -14 12 0" />
+    </motion>
+    <motion id="nod">
+      <track id="ParamAngleY" times="0 0.15 0.32 0.5" values="0 -18 5 0" />
+    </motion>
+    <motion id="shake">
+      <track id="ParamAngleX" times="0 0.18 0.42 0.66 0.85" values="0 -16 16 -8 0" />
+    </motion>
+    <motion id="tilt">
+      <track id="ParamAngleZ" times="0 0.35 1.1 1.5" values="0 14 14 0" />
+    </motion>
+    <motion id="perk">
+      <track id="ParamBrowRY" times="0 0.12 0.45 0.8" values="0 -1 -0.5 0" />
+      <track id="Param198" times="0 0.06 0.3" values="0 -10 0" />
+      <track id="Param158" times="0 0.06 0.3" values="0 -1 0" />
+      <track id="ParamAngleY" times="0 0.15 0.9" values="0 6 0" />
+    </motion>
+    <motion id="tail">
+      <track id="Param_Angle_Rotation17" times="0 0.35 0.95 1.5 1.9" values="0 12 -12 8 0" />
+      <track id="Param_Angle_Rotation19" times="0 0.45 1.05 1.6 1.9" values="0 15 -15 9 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.55 1.15 1.7 1.9" values="0 18 -18 10 0" />
+    </motion>
+    <motion id="bounce">
+      <track id="Param7" times="0 0.12 0.3 0.45 0.62" values="0 1 0.1 0.6 0" />
+      <track id="ParamAngleY" times="0 0.12 0.45 0.62" values="0 -6 -3 0" />
+    </motion>
+    <motion id="recoil">
+      <track id="ParamAngleZ" times="0 0.1 0.35 0.6" values="0 -12 -4 0" />
+      <track id="ParamAngleY" times="0 0.1 0.6" values="0 8 0" />
+      <track id="ParamBrowRY" times="0 0.1 0.6" values="0 0.9 0" />
+      <track id="Param194" times="0 0.1 0.6" values="0 -0.6 0" />
+    </motion>
+
+    <!-- The rig's own physics, rescaled relative to how the artist set it. The ahoge was tuned to
+         swing through a few percent of its range in a calm idle; 8x lets it bounce while staying physical. The
+         lower body (体X2) followed a head turn only halfway; 2x lets it turn with the torso. -->
+    <physicsScale subrigs="呆毛 呆毛X 呆毛X(2)" scale="8" />
+    <physicsScale subrigs="体X2" scale="2" />
+
+
+    <!-- Moods: how she feels. The LLM picks one (and a level, where there are levels) with every
+         reply and it holds until the next reply. Attributes are knobs on the procedural idle
+         (Live2DIdleMotion): unset ones take the calm baseline, multipliers are relative to it and
+         rates are per minute. <pose> is the face and posture she keeps, added on top of the idle so
+         blinking and lip sync still run through it. expression is the face she makes while saying
+         the line; voice is how she says it (sent to TTS). A <level> starts from its mood and
+         overrides what it sets itself, poses included. The first mood is where she starts. -->
+    <mood id="calm" mouth="6" actions="5" tailFlick="0.3" />
+
+    <mood id="happy" tempo="1.2" head="1.2" body="1.1" arms="1.2" tail="1.2" tailCurl="5" tailFlick="0.4" gaze="12" gazeRange="0.6" ears="7" earSway="1.2" mouth="7" actions="6">
+      <pose id="ParamMouthForm" value="0.35" />
+      <pose id="ParamBrowRY" value="-0.3" />
+      <pose id="Param194" value="0.15" />
+      <level expression="smile" voice="Speak warmly and brightly, with a smile in the voice." />
+      <level expression="happy" tempo="1.45" breath="1.1" head="1.4" body="1.3" arms="1.4" tail="1.5" tailCurl="8" tailFlick="0.5" gaze="16" gazeRange="0.7" ears="10" earSway="1.5" bob="1" mouth="8" actions="8"
+             voice="Speak brightly and cheerfully, bubbly, with a light laugh in the voice.">
+        <pose id="ParamMouthForm" value="0.5" />
+        <pose id="ParamBrowRY" value="-0.5" />
+        <pose id="Param194" value="0.25" />
+      </level>
+      <level expression="overjoyed" tempo="1.6" breath="1.2" head="1.5" body="1.4" arms="1.5" tail="1.8" tailCurl="10" tailFlick="0.8" gaze="16" gazeRange="0.7" ears="12" earSway="1.6" bob="1.4" mouth="8" actions="10"
+             voice="Speak ecstatic and excited, bouncy and fast, almost squealing with joy.">
+        <pose id="ParamMouthForm" value="0.7" />
+        <pose id="ParamBrowRY" value="-0.7" />
+        <pose id="Param194" value="0.3" />
+        <pose id="Param2" value="0.3" />
+        <pose id="Param143" value="0.25" />
+      </level>
+    </mood>
+
+    <mood id="playful" tempo="1.2" head="1.2" body="1.1" tail="1.3" tailCurl="10" tailFlick="0.8" gaze="14" gazeRange="0.6" ears="8" earSway="1.3" mouth="8" actions="7">
+      <pose id="Param2" value="-0.35" />
+      <pose id="ParamMouthForm" value="0.45" />
+      <pose id="ParamEyeBallX" value="0.2" />
+      <pose id="ParamAngleZ" value="5" />
+      <level expression="smug" voice="Speak in a teasing, self-satisfied tone, drawing words out playfully." />
+      <level expression="wink" voice="Speak playfully and cutely, light and teasing, like an idol winking at a fan." />
+    </mood>
+
+    <mood id="shy" tempo="0.8" head="0.7" body="0.6" arms="0.6" tail="0.5" tailCurl="-6" tailFlick="0.2" gaze="14" gazeRange="0.45" ears="3" earSway="0.6" mouth="5" actions="4">
+      <pose id="ParamAngleY" value="-8" />
+      <pose id="ParamAngleX" value="8" />
+      <pose id="ParamEyeBallX" value="-0.4" />
+      <pose id="ParamEyeBallY" value="-0.3" />
+      <pose id="Param143" value="0.4" />
+      <pose id="ParamBrowRY" value="0.5" />
+      <pose id="Param194" value="-0.3" />
+      <level expression="shy" voice="Speak shyly and a little quietly, hesitant." />
+      <level expression="flustered" tempo="1.1" head="0.9" ears="8" earSway="0.4" actions="6"
+             voice="Speak flustered and embarrassed, stumbling over the words, voice going a little high.">
+        <pose id="Param143" value="0.9" />
+        <pose id="Param2" value="0.3" />
+        <pose id="ParamBrowRY" value="0.7" />
+      </level>
+    </mood>
+
+    <mood id="curious" expression="curious" tempo="1.2" head="1.3" body="1.2" tail="1.2" tailCurl="18" tailFlick="0.8" gaze="24" gazeRange="0.8" ears="12" earSway="1.4" mouth="7" actions="8"
+          voice="Speak with bright curiosity, interested and eager.">
+      <pose id="ParamAngleZ" value="6" />
+      <pose id="ParamBrowRY" value="-0.7" />
+      <pose id="Param194" value="0.35" />
+      <pose id="Param2" value="0.2" />
+    </mood>
+
+    <!-- The tail held in a question mark. -->
+    <mood id="confused" expression="confused" tempo="0.9" tailCurl="20" tailFlick="0.5" gaze="10" gazeRange="0.6" ears="6" mouth="3" actions="5"
+          voice="Speak in a puzzled, questioning tone, rising at the end.">
+      <pose id="ParamAngleZ" value="10" />
+      <pose id="ParamBrowRY" value="-0.3" />
+      <pose id="ParamMouthForm" value="-0.3" />
+      <pose id="ParamEyeBallY" value="0.15" />
+    </mood>
+
+    <mood id="surprised" tempo="1.2" gaze="16" gazeRange="0.7" ears="10" earSway="1.3" mouth="2" actions="5">
+      <pose id="ParamBrowRY" value="-0.8" />
+      <pose id="Param2" value="0.5" />
+      <level expression="surprised" voice="Speak with surprise, quick and a little higher-pitched." />
+      <level expression="shocked" tempo="1.4" head="0.7" body="0.5" tailFlick="1.5" ears="2" mouth="0" actions="3"
+             voice="Speak in shock, gasping, high-pitched and stammering.">
+        <pose id="ParamBrowRY" value="-1" />
+        <pose id="Param2" value="0.8" />
+        <pose id="Param194" value="-0.5" />
+        <pose id="ParamAngleY" value="4" />
+      </level>
+    </mood>
+
+    <mood id="sad" tempo="0.75" head="0.7" body="0.7" arms="0.6" tail="0.4" tailCurl="-8" gaze="5" gazeRange="0.35" ears="2" earSway="0.5" mouth="0" actions="3">
+      <pose id="ParamBrowRY" value="0.6" />
+      <pose id="ParamEyeLOpen" value="-0.2" />
+      <pose id="ParamEyeROpen" value="-0.2" />
+      <pose id="ParamEyeBallY" value="-0.3" />
+      <pose id="ParamMouthForm" value="-0.5" />
+      <pose id="ParamAngleY" value="-5" />
+      <level expression="sad" voice="Speak softly and slowly, a little downcast." />
+      <level expression="teary" tempo="0.6" head="0.6" body="0.5" gaze="3"
+             voice="Speak quietly in a trembling, choked-up voice, on the verge of tears.">
+        <pose id="ParamBrowRY" value="1" />
+        <pose id="ParamEyeLOpen" value="-0.35" />
+        <pose id="ParamEyeROpen" value="-0.35" />
+        <pose id="ParamEyeBallY" value="-0.5" />
+        <pose id="ParamAngleY" value="-10" />
+        <pose id="Param194" value="-0.3" />
+        <pose id="Param143" value="0.25" />
+      </level>
+    </mood>
+
+    <!-- Angry the cat way: the tail lashes harder the angrier she gets, the ears go back, and
+         at the top she stops shouting and puffs up instead: pouting, red, looking away. -->
+    <mood id="angry" tail="1.2" tailFlick="1.5" ears="6" earSway="1.3" mouth="0" actions="5">
+      <pose id="Param2" value="-0.5" />
+      <pose id="ParamMouthForm" value="-0.3" />
+      <pose id="ParamBrowRY" value="0.4" />
+      <pose id="ParamEyeBallX" value="0.15" />
+      <level expression="annoyed" head="1.1" voice="Speak irritated and curt, a little huffy." />
+      <level expression="angry" tempo="1.15" head="1.3" tail="1.6" tailFlick="2.2" gaze="4" ears="3" earSway="0.5"
+             voice="Speak angry and indignant, sharp and raised, scolding.">
+        <pose id="Param2" value="-0.7" />
+        <pose id="ParamMouthForm" value="-0.4" />
+        <pose id="ParamBrowRY" value="0.8" />
+        <pose id="Param194" value="0.3" />
+        <pose id="ParamAngleY" value="-4" />
+      </level>
+      <level expression="pout" tempo="1.2" head="1.1" tail="2" tailFlick="2.5" gaze="3" ears="2" earSway="0.5" actions="7"
+             voice="Speak in a furious, sulky huff, childish and pouting, stamping on every word.">
+        <pose id="Param192" value="1" />
+        <pose id="Param6" value="0.8" />
+        <pose id="Param143" value="0.45" />
+        <pose id="ParamMouthForm" value="-0.6" />
+        <pose id="ParamBrowRY" value="1" />
+        <pose id="ParamAngleX" value="12" />
+        <pose id="ParamEyeBallX" value="-0.6" />
+      </level>
+    </mood>
+
+    <!-- Mio does not get angry at being ignored: she sulks and fishes for attention, and under
+         that sits the jealous streak she never admits to. -->
+    <mood id="sulky" tempo="0.85" head="0.8" tail="0.7" tailFlick="0.6" gaze="10" gazeRange="0.5" ears="3" mouth="2" actions="5">
+      <pose id="Param6" value="0.5" />
+      <pose id="ParamMouthForm" value="-0.4" />
+      <pose id="ParamEyeBallY" value="-0.2" />
+      <pose id="ParamBrowRY" value="0.3" />
+      <pose id="Param143" value="0.15" />
+      <level expression="sulk" voice="Speak in a sulky, pouty tone, fishing for attention." />
+      <level expression="gloomy" tempo="0.7" head="0.6" gaze="4" gazeRange="0.3" tailFlick="1.2"
+             voice="Speak low and flat, quietly jealous, with a hint of ominous teasing.">
+        <pose id="Param14" value="0.6" />
+        <pose id="Param2" value="-0.4" />
+        <pose id="Param6" value="0" />
+        <pose id="ParamMouthForm" value="0.1" />
+        <pose id="Param143" value="0" />
+      </level>
+    </mood>
+
+    <mood id="tired" tempo="0.75" breath="1.3" head="0.8" arms="0.6" tail="0.5" gaze="5" gazeRange="0.35" ears="2" earSway="0.6" mouth="4" doze="1" actions="3">
+      <pose id="ParamEyeLOpen" value="-0.25" />
+      <pose id="ParamEyeROpen" value="-0.25" />
+      <pose id="Param2" value="-0.3" />
+      <pose id="ParamBrowRY" value="0.4" />
+      <level expression="tired" voice="Speak tiredly but warmly, a bit slow and soft, playing it down." />
+      <level expression="sleepy" tempo="0.55" breath="1.5" arms="0.4" tail="0.35" gaze="2" gazeRange="0.3" ears="1.5" earSway="0.4" mouth="3" doze="5"
+             voice="Speak drowsily and slowly, soft and mumbly, as if half asleep.">
+        <pose id="ParamEyeLOpen" value="-0.45" />
+        <pose id="ParamEyeROpen" value="-0.45" />
+        <pose id="ParamAngleY" value="-5" />
+        <pose id="ParamBrowRY" value="0.7" />
+      </level>
+    </mood>
+
+    <mood id="proud" tempo="1.1" head="1.1" tail="1.3" tailCurl="12" tailFlick="0.4" gaze="8" ears="6" mouth="6" actions="6">
+      <pose id="ParamMouthForm" value="0.5" />
+      <pose id="ParamAngleY" value="5" />
+      <pose id="Param2" value="-0.2" />
+      <pose id="ParamBrowRY" value="-0.3" />
+      <level expression="proud" voice="Speak confidently and proudly, showing off a little." />
+      <level expression="salute" tempo="1.2" voice="Speak crisply and proudly, confident and energetic, like making a promise.">
+        <pose id="Param2" value="0.25" />
+      </level>
+    </mood>
+
+    <!-- Warm toward the player: eyes stay on them, softer and closer. -->
+    <mood id="affectionate" tempo="0.85" head="0.9" tail="1" tailCurl="6" gaze="6" gazeRange="0.35" ears="4" earSway="0.8" mouth="7" actions="5">
+      <pose id="ParamMouthForm" value="0.45" />
+      <pose id="ParamEyeLOpen" value="-0.15" />
+      <pose id="ParamEyeROpen" value="-0.15" />
+      <pose id="Param143" value="0.2" />
+      <level expression="tender" voice="Speak softly and tenderly, warm and gentle." />
+      <level expression="adoring" voice="Speak sweetly and affectionately, soft and a little shy, full of fondness.">
+        <pose id="Param143" value="0.45" />
+        <pose id="ParamEyeLOpen" value="-0.3" />
+        <pose id="ParamEyeROpen" value="-0.3" />
+        <pose id="ParamMouthForm" value="0.6" />
+        <pose id="Param194" value="0.35" />
+      </level>
+    </mood>
+
+    <mood id="worried" tempo="0.9" head="0.8" tail="0.7" gaze="6" gazeRange="0.3" ears="3" mouth="0" actions="4">
+      <pose id="ParamBrowRY" value="0.35" />
+      <pose id="ParamEyeBallY" value="-0.1" />
+      <pose id="ParamMouthForm" value="-0.25" />
+      <pose id="Param194" value="0.25" />
+      <level expression="worried" voice="Speak gently and with concern, soft and caring." />
+      <level expression="anxious" tempo="1.2" gaze="18" gazeRange="0.6" ears="8" earSway="0.6" arms="1.3" tailFlick="1" actions="6"
+             voice="Speak anxiously and nervously, quick and a little shaky.">
+        <pose id="ParamBrowRY" value="0.8" />
+        <pose id="Param2" value="0.3" />
+        <pose id="ParamMouthForm" value="-0.5" />
+      </level>
+    </mood>
+
+    <!-- Actions: what she does on her own, at the mood's "actions" rate. moods="..." lists the
+         moods an action fits ("angry:2" = angry from level 2 up; unset = every mood); when="..."
+         is what she may be doing at the time: idle (the default), speaking (only while her voice
+         plays; must leave the mouth open/closed to the lip sync), thinking (waiting for a reply;
+         a looping one is held until the reply lands). Tracks add on top of the idle and are
+         eased through its springs, so they start and stop with weight. Ears, arms and ahoge are
+         physics outputs, but the idle writes those after physics, so tracks can move them too.
+         Arm swaps are quick (~0.1 s) with the wave arm lowered onto the resting one (Param86 -1),
+         so the crossfade shows no ghost arm. -->
+    <!-- Hand up to her cap, head leaning into it: the closest pose the rig has to resting her head on a hand -->
+    <action id="hat_touch" moods="calm shy curious confused tired proud" weight="1.2">
+      <track id="Param97" times="0 0.12 2.9 3.02" values="0 1 1 0" />
+      <track id="Param74" times="0 0.12 2.9 3.02" values="0 1 1 0" />
+      <track id="ParamAngleZ" times="0 0.6 2.6 3.2" values="0 8 8 0" />
+      <track id="ParamAngleY" times="0 0.6 2.6 3.2" values="0 -5 -5 0" />
+      <track id="ParamEyeBallX" times="0 0.5 2.6 3.1" values="0 0.3 0.3 0" />
+      <track id="ParamBrowRY" times="0 0.6 2.6 3.2" values="0 0.3 0.3 0" />
+    </action>
+    <!-- A little wave; the wave arm swaps in, Param96 drives the forearm and fingers through physics -->
+    <action id="small_wave" moods="calm happy playful curious affectionate" when="idle speaking">
+      <track id="Param97" times="0 0.1 2.55 2.65" values="0 1 1 0" />
+      <track id="Param85" times="0 0.1 2.55 2.65" values="0 1 1 0" />
+      <track id="Param86" times="0 0.1 0.45 2.2 2.55" values="-1 -1 0 0 -1" />
+      <track id="Param87" times="0 0.5 0.8 1.1 1.4 1.7 2 2.3" values="0 -0.35 0.35 -0.35 0.35 -0.35 0.2 0" />
+      <track id="Param96" times="0 0.55 0.85 1.15 1.45 1.75 2.05 2.35" values="0 1 -1 1 -1 1 -0.6 0" />
+      <track id="ParamAngleZ" times="0 0.4 2.2 2.7" values="0 -6 -6 0" />
+      <track id="ParamMouthForm" times="0 0.4 2.3 2.7" values="0 0.6 0.6 0" />
+      <track id="ParamBrowRY" times="0 0.3 2.3 2.7" values="0 -0.5 -0.5 0" />
+    </action>
+    <!-- Hand shoots up with a little hop: "me, me!" -->
+    <action id="raise_hand" moods="happy:2 curious proud" weight="0.8">
+      <track id="Param97" times="0 0.08 1.62 1.7" values="0 1 1 0" />
+      <track id="Param85" times="0 0.08 1.62 1.7" values="0 1 1 0" />
+      <track id="Param86" times="0 0.08 0.35 1.3 1.62" values="-1 -1 0 0 -1" />
+      <track id="Param87" times="0 0.3 1.5" values="0 0.15 0" />
+      <track id="Param7" times="0 0.2 0.45" values="0 0.6 0" />
+      <track id="ParamAngleY" times="0 0.25 1.5 1.8" values="0 6 6 0" />
+      <track id="ParamBrowRY" times="0 0.2 1.5 1.8" values="0 -0.8 -0.8 0" />
+    </action>
+    <!-- Eyes lead, head turns, the body follows through physics: glancing aside -->
+    <action id="turn_left" moods="calm happy playful shy curious confused tired sulky worried sad angry:1">
+      <track id="ParamEyeBallX" times="0 0.2 2.3 2.6" values="0 0.8 0.8 0" />
+      <track id="ParamAngleX" times="0 0.7 2.2 3" values="0 28 28 0" />
+      <track id="ParamAngleZ" times="0 0.7 2.2 3" values="0 -5 -5 0" />
+      <track id="Param194" times="0 0.7 2.2 3" values="0 0.3 0.3 0" />
+      <track id="ParamBrowRY" times="0 0.3 0.6" values="0 -0.6 0" />
+    </action>
+    <!-- The same glance to the other side -->
+    <action id="turn_right" moods="calm happy playful shy curious confused tired sulky worried sad angry:1">
+      <track id="ParamEyeBallX" times="0 0.2 2.3 2.6" values="0 -0.8 -0.8 0" />
+      <track id="ParamAngleX" times="0 0.7 2.2 3" values="0 -28 -28 0" />
+      <track id="ParamAngleZ" times="0 0.7 2.2 3" values="0 5 5 0" />
+      <track id="Param194" times="0 0.7 2.2 3" values="0 0.3 0.3 0" />
+      <track id="ParamBrowRY" times="0 0.3 0.6" values="0 -0.6 0" />
+    </action>
+    <!-- Looks up, thinking something over -->
+    <action id="look_up" moods="calm curious confused">
+      <track id="ParamAngleY" times="0 0.6 2.2 2.8" values="0 20 20 0" />
+      <track id="ParamEyeBallY" times="0 0.4 2.3 2.7" values="0 0.8 0.8 0" />
+      <track id="ParamEyeBallX" times="0 0.4 2.3 2.7" values="0 0.4 0.4 0" />
+      <track id="ParamAngleZ" times="0 0.6 2.2 2.8" values="0 6 6 0" />
+      <track id="ParamMouthForm" times="0 0.5 2.3 2.8" values="0 -0.3 -0.3 0" />
+    </action>
+    <!-- A quick head shake; the ahoge physics rings it back and forth -->
+    <action id="ahoge_boing" moods="calm happy playful shy curious surprised" when="idle speaking">
+      <track id="ParamAngleX" times="0 0.08 0.16 0.24 0.32 0.4 0.5 0.9" values="0 6 -6 5 -3 2 0 0" />
+      <track id="ParamAngleY" times="0 0.1 0.3 0.6" values="0 -7 3 0" />
+      <track id="Param7" times="0 0.1 0.25" values="0 0.6 0" />
+      <track id="ParamBrowRY" times="0 0.1 0.6" values="0 -0.8 0" />
+    </action>
+    <!-- Swaying side to side, eyes half-closed, humming to herself, arms swinging along -->
+    <action id="sway" moods="happy playful" when="idle speaking" weight="1.2">
+      <track id="ParamAngleZ" times="0 0.4 1.2 2 2.8 3.2" values="0 12 -12 12 -7 0" />
+      <track id="ParamAngleX" times="0 0.4 1.2 2 2.8 3.2" values="0 7 -7 7 -3 0" />
+      <track id="ParamEyeLOpen" times="0 0.3 2.8 3.2" values="0 -0.6 -0.6 0" />
+      <track id="ParamEyeROpen" times="0 0.3 2.8 3.2" values="0 -0.6 -0.6 0" />
+      <track id="ParamMouthForm" times="0 0.3 2.9 3.2" values="0 0.8 0.8 0" />
+      <track id="Param34" times="0 0.4 1.2 2 2.8 3.2" values="0 0.5 -0.3 0.5 -0.2 0" />
+      <track id="Param48" times="0 0.4 1.2 2 2.8 3.2" values="0 -0.3 0.5 -0.3 0.3 0" />
+      <track id="Param_Angle_Rotation19" times="0 0.8 1.6 2.4 3.2" values="0 15 -15 15 0" />
+    </action>
+    <!-- A big yawn, head tipping back, ears flattening, arms opening a little -->
+    <action id="yawn" moods="tired calm" weight="0.8">
+      <track id="ParamMouthOpenY" times="0 0.8 2.2 3" values="0 0.8 0.9 0" />
+      <track id="ParamO" times="0 0.8 2.2 3" values="0 0.8 0.9 0" />
+      <track id="ParamMouthForm" times="0 0.8 2.2 3" values="0 -0.5 -0.5 0" />
+      <track id="ParamEyeLOpen" times="0 0.6 2.4 3" values="0 -0.8 -0.8 0" />
+      <track id="ParamEyeROpen" times="0 0.6 2.4 3" values="0 -0.8 -0.8 0" />
+      <track id="ParamAngleY" times="0 0.8 2.2 3" values="0 12 14 0" />
+      <track id="ParamBrowRY" times="0 0.8 2.4 3" values="0 0.8 0.8 0" />
+      <track id="Param194" times="0 0.8 2.4 3" values="0 -0.3 -0.3 0" />
+      <track id="Param34" times="0 0.8 2.2 3" values="0 0.6 0.6 0" />
+      <track id="Param48" times="0 0.8 2.2 3" values="0 0.6 0.6 0" />
+    </action>
+    <!-- Leans in toward the screen for a closer look -->
+    <action id="lean_in" moods="curious happy playful affectionate worried">
+      <track id="Param194" times="0 0.6 2 2.6" values="0 1 1 0" />
+      <track id="ParamAngleZ" times="0 0.6 2 2.6" values="0 9 9 0" />
+      <track id="ParamBrowRY" times="0 0.5 2 2.6" values="0 -0.6 -0.6 0" />
+      <track id="ParamMouthForm" times="0 0.5 2 2.6" values="0 0.5 0.5 0" />
+    </action>
+    <!-- Turns side-on as far as the rig goes (head 30, body following through physics), then
+         glances back at the player over her shoulder. A full profile is not drawn in the model. -->
+    <action id="side_look_back_left" moods="calm happy playful shy curious sulky affectionate" weight="1.1">
+      <track id="ParamAngleX" times="0 0.8 3 3.8" values="0 30 30 0" />
+      <track id="ParamAngleZ" times="0 0.8 3 3.8" values="0 -6 -6 0" />
+      <track id="Param194" times="0 0.8 3 3.8" values="0 0.3 0.3 0" />
+      <track id="ParamEyeBallX" times="0 0.3 0.9 1.3 2.9 3.4" values="0 0.6 0.6 -0.9 -0.9 0" />
+      <track id="ParamMouthForm" times="0 1.2 3 3.6" values="0 0.5 0.5 0" />
+      <track id="ParamBrowRY" times="0 1.2 3 3.6" values="0 -0.4 -0.4 0" />
+      <track id="Param_Angle_Rotation19" times="0 1.3 1.8 2.3 2.8" values="0 0 14 -10 0" />
+    </action>
+    <action id="side_look_back_right" moods="calm happy playful shy curious sulky affectionate" weight="1.1">
+      <track id="ParamAngleX" times="0 0.8 3 3.8" values="0 -30 -30 0" />
+      <track id="ParamAngleZ" times="0 0.8 3 3.8" values="0 6 6 0" />
+      <track id="Param194" times="0 0.8 3 3.8" values="0 0.3 0.3 0" />
+      <track id="ParamEyeBallX" times="0 0.3 0.9 1.3 2.9 3.4" values="0 -0.6 -0.6 0.9 0.9 0" />
+      <track id="ParamMouthForm" times="0 1.2 3 3.6" values="0 0.5 0.5 0" />
+      <track id="ParamBrowRY" times="0 1.2 3 3.6" values="0 -0.4 -0.4 0" />
+      <track id="Param_Angle_Rotation19" times="0 1.3 1.8 2.3 2.8" values="0 0 -14 10 0" />
+    </action>
+    <!-- Thinking, held for as long as she waits for a reply.
+         0-0.9 s: into the pose - a blink, ears up, hand up to her head, eyes up, an ω pout.
+         0.9-6.5 s: the loop - eyes drift left, right, back; a couple of "hm hm" nods; each ear
+         swivels in turn; a blink. Values at 0.9 and 6.5 match, so it loops seamlessly.
+         6.5-7.5 s: the answer lands - "ah!", eyes back on the player, ears up, a little hop,
+         hand down. Released mid-loop, the pose eases from where it is into this part. -->
+    <action id="think" when="thinking" loopStart="0.9" loopEnd="6.5">
+      <track id="Param97" times="0 0.12 6.9 7.02" values="0 1 1 0" />
+      <track id="Param74" times="0 0.12 6.9 7.02" values="0 1 1 0" />
+      <track id="ParamEyeLOpen" times="0 0.05 0.12 0.2 0.9 2.9 2.98 3.06 3.14 5.4 5.48 5.56 5.64 6.5 6.6" values="0 0 -1 -0.15 -0.15 -0.15 -1 -1 -0.15 -0.15 -1 -1 -0.15 -0.15 0" />
+      <track id="ParamEyeROpen" times="0 0.05 0.12 0.2 0.9 2.9 2.98 3.06 3.14 5.4 5.48 5.56 5.64 6.5 6.6" values="0 0 -1 -0.15 -0.15 -0.15 -1 -1 -0.15 -0.15 -1 -1 -0.15 -0.15 0" />
+      <track id="ParamEyeBallX" times="0 0.4 0.9 1.9 2.3 3.6 4 4.8 5.1 6.5 6.75" values="0 -0.5 -0.5 -0.5 0.45 0.45 -0.2 -0.2 -0.5 -0.5 0" />
+      <track id="ParamEyeBallY" times="0 0.4 0.9 2.3 4 5.1 6.5 6.75" values="0 0.55 0.55 0.5 0.65 0.55 0.55 0" />
+      <track id="ParamAngleZ" times="0 0.8 0.9 2.3 3.6 4.8 6.5 7.1" values="0 8 8 4 10 6 8 0" />
+      <track id="ParamAngleX" times="0 0.9 2.3 3.6 4 5.1 6.5 7" values="0 0 8 6 -4 -6 0 0" />
+      <track id="ParamAngleY" times="0 0.8 0.9 3.9 4.1 4.3 4.5 4.7 6.5 6.65 6.9 7.3" values="0 5 5 5 2 5 2 5 5 8 -3 0" />
+      <track id="ParamBrowRY" times="0 0.2 0.6 0.9 2.3 4 6.5 6.65 7.5" values="0 -0.8 -0.4 -0.4 -0.2 -0.5 -0.4 -1 0" />
+      <track id="Param198" times="0 0.08 0.35 6.5 6.58 6.85" values="0 -10 0 0 -10 0" />
+      <track id="Param4" times="0 2.4 2.55 3.4 3.6 6.5" values="0 0 0.7 0.7 0 0" />
+      <track id="Param167" times="0 5 5.15 5.9 6.1 6.5" values="0 0 0.7 0.7 0 0" />
+      <track id="ParamMouthForm" times="0 0.5 0.9 6.5 6.7 7.5" values="0 -1 -1 -1 0.3 0" />
+      <track id="Param10" times="0 0.5 0.9 6.5 6.7" values="0 0.8 0.8 0.8 0" />
+      <track id="Param6" times="0 0.5 0.9 3 4 6.5 6.6" values="0 0.4 0.4 0.2 0.5 0.4 0" />
+      <track id="Param7" times="0 6.5 6.6 6.8" values="0 0 0.4 0" />
+    </action>
+    <!-- Narrows her eyes and peers at something off to the side, leaning in: suspicious cat. -->
+    <action id="squint_peer" moods="calm curious shy confused">
+      <track id="ParamEyeLOpen" times="0 0.4 2.4 2.9" values="0 -0.6 -0.6 0" />
+      <track id="ParamEyeROpen" times="0 0.4 2.4 2.9" values="0 -0.6 -0.6 0" />
+      <track id="ParamEyeBallX" times="0 0.3 2.4 2.8" values="0 0.65 0.65 0" />
+      <track id="ParamEyeBallY" times="0 0.3 2.4 2.8" values="0 -0.1 -0.1 0" />
+      <track id="ParamAngleX" times="0 0.5 2.4 2.9" values="0 12 12 0" />
+      <track id="ParamAngleZ" times="0 0.5 2.4 2.9" values="0 -5 -5 0" />
+      <track id="Param194" times="0 0.5 2.4 2.9" values="0 0.4 0.4 0" />
+      <track id="ParamBrowRY" times="0 0.3 2.4 2.9" values="0 -0.7 -0.7 0" />
+      <track id="ParamMouthForm" times="0 0.4 2.4 2.9" values="0 -0.4 -0.4 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.8 1 1.2 1.4 1.6 1.9" values="0 0 10 -10 10 -6 0" />
+    </action>
+    <!-- Half-closed, content eyes with an ω cat mouth and a little blush: a happy cat. -->
+    <action id="content_squint" moods="calm happy tired affectionate" weight="1.2">
+      <track id="ParamEyeLOpen" times="0 0.6 2.6 3.2" values="0 -0.55 -0.55 0" />
+      <track id="ParamEyeROpen" times="0 0.6 2.6 3.2" values="0 -0.55 -0.55 0" />
+      <track id="ParamMouthForm" times="0 0.5 2.6 3.2" values="0 -1.3 -1.3 0" />
+      <track id="Param10" times="0 0.5 2.6 3.2" values="0 1 1 0" />
+      <track id="Param143" times="0 0.6 2.6 3.2" values="0 0.4 0.4 0" />
+      <track id="ParamAngleZ" times="0 0.8 2.6 3.2" values="0 7 7 0" />
+      <track id="ParamBrowRY" times="0 0.6 2.6 3.2" values="0 0.2 0.2 0" />
+    </action>
+    <!-- The cat slow blink: eyes close slowly, stay shut a moment, open slowly. Trust, in cat -->
+    <action id="slow_blink" moods="calm happy shy tired affectionate" when="idle speaking" weight="1.2">
+      <track id="ParamEyeLOpen" times="0 0.7 1.2 2" values="0 -1 -1 0" />
+      <track id="ParamEyeROpen" times="0 0.7 1.2 2" values="0 -1 -1 0" />
+      <track id="ParamAngleZ" times="0 0.7 1.4 2.2" values="0 6 6 0" />
+      <track id="ParamAngleY" times="0 0.7 1.4 2.2" values="0 -3 -3 0" />
+      <track id="ParamBrowRY" times="0 0.7 1.4 2.2" values="0 0.3 0.3 0" />
+      <track id="ParamMouthForm" times="0 0.6 1.6 2.2" values="0 -1.3 -1.3 0" />
+      <track id="Param10" times="0 0.6 1.6 2.2" values="0 1 1 0" />
+    </action>
+    <!-- Both ears swing toward a sound first, then the eyes, then the head -->
+    <action id="listen" moods="calm curious shy worried surprised">
+      <track id="Param4" times="0 0.12 1.9 2.4" values="0 0.8 0.8 0" />
+      <track id="Param12" times="0 0.12 1.9 2.4" values="0 0.45 0.45 0" />
+      <track id="Param167" times="0 0.2 1.9 2.4" values="0 -0.8 -0.8 0" />
+      <track id="Param168" times="0 0.2 1.9 2.4" values="0 -0.45 -0.45 0" />
+      <track id="ParamEyeBallX" times="0 0.3 1.8 2.3" values="0 0.6 0.6 0" />
+      <track id="ParamAngleX" times="0 0.6 1.8 2.4" values="0 9 9 0" />
+    </action>
+    <!-- Eyes lock onto something flying past and follow it; ears forward, tail tip twitching -->
+    <action id="track_fly" moods="curious happy playful">
+      <track id="ParamEyeBallX" times="0 0.3 0.9 1.6 2.2 2.8" values="0 -0.8 -0.2 0.8 0.3 0" />
+      <track id="ParamEyeBallY" times="0 0.3 0.9 1.6 2.2 2.8" values="0 0.5 0.8 0.3 0.6 0" />
+      <track id="ParamAngleX" times="0 0.4 1 1.7 2.3 2.9" values="0 -13 -3 15 5 0" />
+      <track id="ParamAngleY" times="0 0.4 1 1.7 2.3 2.9" values="0 5 9 3 7 0" />
+      <track id="ParamBrowRY" times="0 0.2 2.6 2.9" values="0 -0.9 -0.9 0" />
+      <track id="Param_Angle_Rotation20" times="0 0.3 0.45 0.6 0.75 0.9 1.05 1.2 1.35 1.5 1.8" values="0 10 -10 10 -10 10 -10 10 -10 5 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.3 0.45 0.6 0.75 0.9 1.05 1.2 1.35 1.5 1.8" values="0 14 -14 14 -14 14 -14 14 -14 7 0" />
+    </action>
+    <!-- Staring at a bird out of the window, jaw chattering -->
+    <action id="chatter" moods="curious" weight="0.8">
+      <track id="ParamEyeBallX" times="0 0.3 2.1 2.5" values="0 0.7 0.7 0" />
+      <track id="ParamEyeBallY" times="0 0.3 2.1 2.5" values="0 0.5 0.5 0" />
+      <track id="ParamAngleX" times="0 0.5 2.1 2.6" values="0 10 10 0" />
+      <track id="ParamAngleY" times="0 0.5 2.1 2.6" values="0 6 6 0" />
+      <track id="ParamBrowRY" times="0 0.2 2.2 2.6" values="0 -0.9 -0.9 0" />
+      <track id="ParamMouthOpenY" times="0 0.6 0.7 0.8 0.9 1 1.1 1.2 1.3 1.4 1.5 1.6" values="0 0 0.35 0.05 0.35 0.05 0.35 0.05 0.35 0.05 0.35 0" />
+      <track id="ParamI" times="0 0.5 1.6 1.8" values="0 0.7 0.7 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.6 0.8 1 1.2 1.4 1.7" values="0 12 -12 12 -12 8 0" />
+    </action>
+    <!-- Leans in and rubs her head against the screen, eyes shut: the cat head bump -->
+    <action id="bunt" moods="happy shy affectionate">
+      <track id="Param194" times="0 0.6 2.2 2.8" values="0 0.9 0.9 0" />
+      <track id="ParamAngleZ" times="0 0.6 2.2 2.8" values="0 15 15 0" />
+      <track id="ParamAngleX" times="0 0.6 1 1.4 1.8 2.2 2.8" values="0 0 6 -2 6 0 0" />
+      <track id="ParamEyeLOpen" times="0 0.5 2.3 2.8" values="0 -0.9 -0.9 0" />
+      <track id="ParamEyeROpen" times="0 0.5 2.3 2.8" values="0 -0.9 -0.9 0" />
+      <track id="ParamMouthForm" times="0 0.5 2.3 2.8" values="0 -1.3 -1.3 0" />
+      <track id="Param10" times="0 0.5 2.3 2.8" values="0 1 1 0" />
+      <track id="Param4" times="0 0.5 2.3 2.8" values="0 0.4 0.4 0" />
+      <track id="Param167" times="0 0.5 2.3 2.8" values="0 0.4 0.4 0" />
+    </action>
+    <!-- Ears flatten out sideways and she looks away: flustered cat -->
+    <action id="airplane_ears" moods="shy worried surprised:2 angry" weight="1.2">
+      <track id="Param4" times="0 0.2 2 2.6" values="0 1 1 0" />
+      <track id="Param12" times="0 0.2 2 2.6" values="0 0.6 0.6 0" />
+      <track id="Param167" times="0 0.2 2 2.6" values="0 1 1 0" />
+      <track id="Param168" times="0 0.2 2 2.6" values="0 0.6 0.6 0" />
+      <track id="ParamBrowRY" times="0 0.2 2 2.6" values="0 0.8 0.8 0" />
+      <track id="ParamEyeBallX" times="0 0.3 2 2.5" values="0 -0.5 -0.5 0" />
+      <track id="ParamAngleY" times="0 0.4 2 2.6" values="0 -6 -6 0" />
+    </action>
+    <!-- A little stretch: arms out, fingers spread, head back -->
+    <action id="stretch" moods="tired calm happy" weight="0.7">
+      <track id="Param34" times="0 0.8 1.8 2.6" values="0 0.9 0.9 0" />
+      <track id="Param48" times="0 0.8 1.8 2.6" values="0 0.9 0.9 0" />
+      <track id="Param36" times="0 0.8 1.8 2.6" values="0 0.6 0.6 0" />
+      <track id="Param50" times="0 0.8 1.8 2.6" values="0 0.6 0.6 0" />
+      <track id="Param43" times="0 0.8 1.8 2.6" values="0 1 1 0" />
+      <track id="Param161" times="0 0.8 1.8 2.6" values="0 1 1 0" />
+      <track id="ParamAngleY" times="0 0.8 1.8 2.6" values="0 12 12 0" />
+      <track id="ParamEyeLOpen" times="0 0.6 1.9 2.5" values="0 -0.8 -0.8 0" />
+      <track id="ParamEyeROpen" times="0 0.6 1.9 2.5" values="0 -0.8 -0.8 0" />
+      <track id="ParamMouthOpenY" times="0 0.8 1.7 2.4" values="0 0.4 0.4 0" />
+      <track id="Param7" times="0 0.8 1.8 2.6" values="0 0.5 0.5 0" />
+    </action>
+    <!-- Fingers flexing left, right, left: kneading, the way a content cat does -->
+    <action id="paw_flex" moods="calm happy tired affectionate" when="idle speaking" weight="0.8">
+      <track id="Param43" times="0 0.25 0.5 0.75 1 1.25 1.5 1.8" values="0 1 -0.6 1 -0.6 1 -0.4 0" />
+      <track id="Param161" times="0 0.25 0.5 0.75 1 1.25 1.5 1.8" values="0 -0.6 1 -0.6 1 -0.6 1 0" />
+      <track id="Param38" times="0 0.25 0.5 0.75 1 1.25 1.5 1.8" values="0 0.5 -0.3 0.5 -0.3 0.5 -0.2 0" />
+      <track id="Param51" times="0 0.25 0.5 0.75 1 1.25 1.5 1.8" values="0 -0.3 0.5 -0.3 0.5 -0.3 0.5 0" />
+      <track id="ParamEyeLOpen" times="0 0.4 1.5 1.9" values="0 -0.5 -0.5 0" />
+      <track id="ParamEyeROpen" times="0 0.4 1.5 1.9" values="0 -0.5 -0.5 0" />
+      <track id="ParamMouthForm" times="0 0.4 1.5 1.9" values="0 -1.3 -1.3 0" />
+      <track id="Param10" times="0 0.4 1.5 1.9" values="0 1 1 0" />
+    </action>
+
+    <!-- Angry: head whips away with eyes shut, "hmph", ears back, a little stamp; then a peek back
+         to check the player noticed. -->
+    <action id="huff" moods="angry sulky" weight="1.2">
+      <track id="ParamAngleX" times="0 0.25 1.6 2.6" values="0 24 20 0" />
+      <track id="ParamAngleY" times="0 0.25 1.6 2.6" values="0 6 4 0" />
+      <track id="ParamEyeLOpen" times="0 0.15 0.9 1.2" values="0 -1 -1 0" />
+      <track id="ParamEyeROpen" times="0 0.15 0.9 1.2" values="0 -1 -1 0" />
+      <track id="ParamEyeBallX" times="0 1.2 1.6 2.4" values="0 0 -0.7 0" />
+      <track id="ParamBrowRY" times="0 0.2 2 2.6" values="0 0.8 0.8 0" />
+      <track id="Param7" times="0 0.1 0.25" values="0 0.5 0" />
+      <track id="Param_Angle_Rotation20" times="0 0.2 0.35 0.5 0.65 0.9" values="0 16 -16 14 -10 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.2 0.35 0.5 0.65 0.9" values="0 20 -20 18 -12 0" />
+    </action>
+    <!-- The whole tail lashing, base to tip, with an ear flick: a cat's irritation. Leaves the
+         head and mouth alone, so it plays while she talks too. -->
+    <action id="tail_lash" moods="angry sulky:2" when="idle speaking" weight="1.2">
+      <track id="Param_Angle_Rotation17" times="0 0.2 0.4 0.6 0.8 1 1.3" values="0 14 -14 14 -14 10 0" />
+      <track id="Param_Angle_Rotation19" times="0 0.25 0.45 0.65 0.85 1.05 1.4" values="0 20 -20 20 -20 12 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.3 0.5 0.7 0.9 1.1 1.5" values="0 26 -26 26 -26 14 0" />
+      <track id="Param198" times="0 0.06 0.3" values="0 -10 0" />
+    </action>
+    <!-- Leans in with narrowed eyes and flat ears, holding the player's gaze; only the tail tip moves. -->
+    <action id="glare" moods="angry:2">
+      <track id="Param194" times="0 0.6 2.4 3" values="0 0.7 0.7 0" />
+      <track id="ParamAngleY" times="0 0.6 2.4 3" values="0 -7 -7 0" />
+      <track id="Param2" times="0 0.4 2.4 2.9" values="0 -0.6 -0.6 0" />
+      <track id="ParamEyeLOpen" times="0 0.4 2.4 2.9" values="0 -0.25 -0.25 0" />
+      <track id="ParamEyeROpen" times="0 0.4 2.4 2.9" values="0 -0.25 -0.25 0" />
+      <track id="ParamBrowRY" times="0 0.3 2.5 3" values="0 1 1 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.6 0.75 0.9 1.05 1.2 1.5 2" values="0 0 12 -12 12 -12 8 0" />
+    </action>
+    <!-- Two stamps on the spot, head jerking down with each, tail thrashing. -->
+    <action id="stomp" moods="angry:3" weight="1.2">
+      <track id="Param7" times="0 0.1 0.22 0.34 0.46 0.6" values="0 1 0 1 0 0" />
+      <track id="ParamAngleY" times="0 0.1 0.22 0.34 0.46 0.7" values="0 -7 0 -7 0 0" />
+      <track id="ParamAngleZ" times="0 0.1 0.34 0.7" values="0 -4 4 0" />
+      <track id="ParamBrowRY" times="0 0.1 1.1 1.4" values="0 1 1 0" />
+      <track id="ParamEyeLOpen" times="0 0.1 0.6 0.8" values="0 -0.6 -0.6 0" />
+      <track id="ParamEyeROpen" times="0 0.1 0.6 0.8" values="0 -0.6 -0.6 0" />
+      <track id="Param_Angle_Rotation19" times="0 0.15 0.3 0.45 0.6 0.9" values="0 18 -18 18 -18 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.15 0.3 0.45 0.6 0.9" values="0 24 -24 24 -24 0" />
+    </action>
+    <!-- Face turned away, cheeks puffing and letting go, eyes sliding back to see if anyone is watching. -->
+    <action id="cheek_puff" moods="angry:3 sulky">
+      <track id="Param6" times="0 0.5 0.9 1.3 1.7 2.3 2.8" values="0 -0.5 0 -0.5 0 0 0" />
+      <track id="Param143" times="0 0.5 2.3 2.8" values="0 0.3 0.3 0" />
+      <track id="ParamAngleX" times="0 0.5 2.3 2.8" values="0 -14 -14 0" />
+      <track id="ParamAngleY" times="0 0.5 2.3 2.8" values="0 4 4 0" />
+      <track id="ParamEyeBallX" times="0 0.4 1 1.3 1.8 2.1 2.6" values="0 -0.5 -0.5 0.6 0.6 -0.5 0" />
+    </action>
+    <!-- Sad: head sinks, ears flatten, eyes drop, arms hang. -->
+    <action id="droop" moods="sad" weight="1.2">
+      <track id="ParamAngleY" times="0 0.9 2.6 3.4" values="0 -14 -14 0" />
+      <track id="Param194" times="0 0.9 2.6 3.4" values="0 -0.4 -0.4 0" />
+      <track id="ParamBrowRY" times="0 0.6 2.8 3.4" values="0 1 1 0" />
+      <track id="ParamEyeBallY" times="0 0.5 2.8 3.3" values="0 -0.6 -0.6 0" />
+      <track id="ParamEyeLOpen" times="0 0.8 2.7 3.3" values="0 -0.35 -0.35 0" />
+      <track id="ParamEyeROpen" times="0 0.8 2.7 3.3" values="0 -0.35 -0.35 0" />
+      <track id="Param34" times="0 0.9 2.6 3.4" values="0 -0.4 -0.4 0" />
+      <track id="Param48" times="0 0.9 2.6 3.4" values="0 -0.4 -0.4 0" />
+    </action>
+    <!-- A sigh: shoulders and chin lift on the breath in, then drop, eyes closing on the way out. -->
+    <action id="sigh" moods="sad tired worried">
+      <track id="Param34" times="0 0.8 1.1 1.9 2.6" values="0 0.5 0.5 -0.25 0" />
+      <track id="Param48" times="0 0.8 1.1 1.9 2.6" values="0 0.5 0.5 -0.25 0" />
+      <track id="ParamAngleY" times="0 0.8 1.1 1.9 2.6" values="0 5 5 -6 0" />
+      <track id="ParamEyeLOpen" times="0 1 1.3 2.1 2.6" values="0 0 -0.8 -0.8 0" />
+      <track id="ParamEyeROpen" times="0 1 1.3 2.1 2.6" values="0 0 -0.8 -0.8 0" />
+      <track id="ParamMouthForm" times="0 1 2.2 2.6" values="0 -0.4 -0.4 0" />
+      <track id="ParamBrowRY" times="0 1.2 2.2 2.6" values="0 0.5 0.5 0" />
+    </action>
+    <!-- Close to tears: eyes squeezed shut, two small sniffs, lips pressed, cheeks going red. -->
+    <action id="sniffle" moods="sad:2">
+      <track id="ParamAngleY" times="0 0.1 0.2 0.5 0.6 0.7 1.2" values="0 4 0 0 4 0 0" />
+      <track id="ParamEyeLOpen" times="0 0.1 0.8 1.1" values="0 -0.7 -0.7 0" />
+      <track id="ParamEyeROpen" times="0 0.1 0.8 1.1" values="0 -0.7 -0.7 0" />
+      <track id="Param143" times="0 0.2 1.5 2" values="0 0.3 0.3 0" />
+      <track id="Param6" times="0 0.2 1.4 1.8" values="0 0.4 0.4 0" />
+      <track id="ParamBrowRY" times="0 0.2 1.6 2" values="0 0.5 0.5 0" />
+    </action>
+    <!-- Head turned away, eyes sneaking back to the player and darting off again when caught. -->
+    <action id="peek" moods="sulky shy" weight="1.2">
+      <track id="ParamAngleX" times="0 0.6 2.6 3.2" values="0 -20 -20 0" />
+      <track id="ParamAngleZ" times="0 0.6 2.6 3.2" values="0 5 5 0" />
+      <track id="ParamEyeBallX" times="0 0.5 1 1.15 1.7 1.85 2.6 3.1" values="0 -0.5 -0.5 0.8 0.8 -0.5 -0.5 0" />
+      <track id="Param143" times="0 1.1 1.9 2.4" values="0 0.25 0.25 0" />
+    </action>
+    <!-- Worried: fingers fidgeting, eyes dropping to her hands and flicking about. -->
+    <action id="fidget" moods="worried shy:2" when="idle speaking" weight="1.2">
+      <track id="Param43" times="0 0.2 0.4 0.6 0.8 1 1.2 1.5" values="0 0.8 -0.4 0.8 -0.4 0.8 -0.3 0" />
+      <track id="Param161" times="0 0.25 0.45 0.65 0.85 1.05 1.25 1.55" values="0 -0.4 0.8 -0.4 0.8 -0.4 0.7 0" />
+      <track id="Param38" times="0 0.3 0.6 0.9 1.2 1.6" values="0 0.3 -0.2 0.3 -0.2 0" />
+      <track id="Param51" times="0 0.3 0.6 0.9 1.2 1.6" values="0 -0.2 0.3 -0.2 0.3 0" />
+      <track id="ParamEyeBallY" times="0 0.3 1.6 2" values="0 -0.4 -0.4 0" />
+      <track id="ParamEyeBallX" times="0 0.3 0.9 1.3 1.6 2" values="0 -0.3 0.2 -0.3 0 0" />
+    </action>
+    <!-- Surprised: a jump back, ears straight up and flicking, eyes wide, tail shooting up. -->
+    <action id="startle" moods="surprised" weight="1.2">
+      <track id="Param7" times="0 0.08 0.25" values="0 1 0" />
+      <track id="Param194" times="0 0.1 0.9 1.6" values="0 -0.8 -0.8 0" />
+      <track id="ParamBrowRY" times="0 0.06 1 1.6" values="0 -1 -1 0" />
+      <track id="Param198" times="0 0.05 0.3" values="0 -10 0" />
+      <track id="Param158" times="0 0.05 0.3" values="0 -1 0" />
+      <track id="Param2" times="0 0.08 1 1.5" values="0 0.6 0.6 0" />
+      <track id="ParamAngleY" times="0 0.1 0.5 1.6" values="0 6 2 0" />
+      <track id="Param_Angle_Rotation19" times="0 0.1 1 1.6" values="0 16 16 0" />
+    </action>
+    <!-- Happy: a double bounce on her toes, ears up, tail tip swinging. -->
+    <action id="hop" moods="happy:2 playful proud:2" when="idle speaking">
+      <track id="Param7" times="0 0.12 0.3 0.45 0.62" values="0 0.9 0.1 0.7 0" />
+      <track id="ParamAngleY" times="0 0.12 0.45 0.62" values="0 -5 -2 0" />
+      <track id="ParamBrowRY" times="0 0.1 0.7 1" values="0 -0.8 -0.8 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.2 0.4 0.6 0.8 1" values="0 16 -16 12 -8 0" />
+    </action>
+    <!-- Big slow tail swishes: pleased with herself. -->
+    <action id="happy_tail" moods="happy playful proud affectionate" when="idle speaking">
+      <track id="Param_Angle_Rotation17" times="0 0.4 1 1.6 2" values="0 10 -10 8 0" />
+      <track id="Param_Angle_Rotation19" times="0 0.5 1.1 1.7 2" values="0 16 -16 10 0" />
+      <track id="Param_Angle_Rotation21" times="0 0.6 1.2 1.8 2" values="0 22 -22 12 0" />
+    </action>
+    <!-- Proud: chin up, eyes half-closed, a satisfied smile, tail raised. -->
+    <action id="chin_up" moods="proud playful" weight="1.2">
+      <track id="ParamAngleY" times="0 0.5 2.4 3" values="0 12 12 0" />
+      <track id="ParamAngleZ" times="0 0.5 2.4 3" values="0 -5 -5 0" />
+      <track id="ParamEyeLOpen" times="0 0.4 2.4 2.9" values="0 -0.35 -0.35 0" />
+      <track id="ParamEyeROpen" times="0 0.4 2.4 2.9" values="0 -0.35 -0.35 0" />
+      <track id="ParamMouthForm" times="0 0.4 2.4 2.9" values="0 0.5 0.5 0" />
+      <track id="ParamBrowRY" times="0 0.3 2.5 3" values="0 -0.6 -0.6 0" />
+      <track id="Param_Angle_Rotation19" times="0 0.6 2.4 3" values="0 12 12 0" />
+    </action>
+    <!-- Playful: a quick wink with a tilt of the head. -->
+    <action id="wink_tease" moods="playful affectionate:2" when="idle speaking" weight="1.2">
+      <track id="ParamEyeLOpen" times="0 0.12 0.5 0.7" values="0 -1 -1 0" />
+      <track id="ParamMouthForm" times="0 0.15 0.8 1.2" values="0 0.6 0.6 0" />
+      <track id="ParamAngleZ" times="0 0.2 0.8 1.3" values="0 -8 -8 0" />
+      <track id="Param143" times="0 0.2 0.8 1.3" values="0 0.2 0.2 0" />
+    </action>
+    <!-- Confused: head tilts one way, then the other, eyes searching up and to the side. -->
+    <action id="puzzle" moods="confused" weight="1.3">
+      <track id="ParamAngleZ" times="0 0.5 1.4 1.9 2.8 3.4" values="0 12 12 -10 -10 0" />
+      <track id="ParamEyeBallY" times="0 0.4 3 3.4" values="0 0.4 0.4 0" />
+      <track id="ParamEyeBallX" times="0 0.5 1.4 1.9 2.8 3.3" values="0 0.4 0.4 -0.4 -0.4 0" />
+      <track id="ParamMouthForm" times="0 0.4 3 3.4" values="0 -0.4 -0.4 0" />
+      <track id="ParamBrowRY" times="0 0.3 3 3.4" values="0 -0.4 -0.4 0" />
+    </action>
+
+  </persona>
+
+  <persona id="inner">
+    <!-- This rig's artist expressions only; no parameter recipes or actions yet. -->
+    <expression id="gloomy" asset="黑颜" />
+    <expression id="angry" asset="生气" />
+    <expression id="blush" asset="脸红" />
+    <expression id="confused" asset="问号" />
+    <expression id="eyepatch_toggle" asset="眼罩开关" />
+    <expression id="eyepatch_touch" asset="扶眼罩" />
+    <motion id="scene1" asset="Scene1" />
+
+    <mood id="brooding" tempo="0.7" head="0.6" body="0.5" arms="0.4" tail="0.5" tailFlick="0.6" gaze="4" gazeRange="0.3" ears="2" earSway="0.5" mouth="0" actions="0"
+          voice="Speak low, slow and quiet, with long pauses and an unsettling calm." />
+    <mood id="possessive" tempo="0.6" head="0.5" body="0.4" arms="0.4" tail="0.4" tailFlick="1" gaze="2" gazeRange="0.2" ears="1" earSway="0.4" mouth="0" actions="0">
+      <level expression="gloomy" voice="Speak low, slow and possessive, with an unsettling calm, as if quietly seething." />
+      <level expression="eyepatch_toggle" voice="Speak in a hushed, deliberate whisper, savoring the reveal." />
+    </mood>
+    <mood id="jealous" expression="angry" tempo="0.9" head="0.8" tail="1" tailFlick="2" gaze="4" ears="3" mouth="0" actions="0"
+          voice="Speak sharp and clipped, jealous and irritated, snapping but not shouting." />
+    <mood id="flustered" expression="blush" tempo="0.8" head="0.6" tail="0.5" gaze="10" gazeRange="0.4" ears="3" mouth="0" actions="0"
+          voice="Speak softly with a slight catch in the breath, flustered but still intense." />
+    <mood id="suspicious" tempo="0.7" head="0.6" tail="0.6" tailFlick="1" gaze="6" gazeRange="0.4" ears="4" mouth="0" actions="0">
+      <level expression="confused" voice="Speak slowly and suspiciously, probing, the question hanging in the air." />
+      <level expression="eyepatch_touch" voice="Speak slowly with deliberate pauses, quiet and measured." />
+    </mood>
+  </persona>
+</live2d>
