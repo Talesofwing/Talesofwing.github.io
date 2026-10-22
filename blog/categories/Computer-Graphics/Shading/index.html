@@ -1,0 +1,175 @@
+
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shading - Zero</title>
+  <script type="application/json" id="blog-doc-title">{"site":false,"titles":null,"label":"Shading"}</script>
+  <meta name="description" content="A game developer">
+  <meta name="theme-color" content="#f3efe9">
+  <script>try{document.documentElement.dataset.theme=localStorage.getItem("zero-blog-theme")||"light"}catch{}</script>
+  
+  <script>try{const o=["zh-Hant","zh-Hans","en","ja"];let l=localStorage.getItem("zero-blog-locale")||localStorage.getItem("zero-locale");if(!o.includes(l)){l="en";for(const n of(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language])){const v=String(n).toLowerCase();if(v.startsWith("zh")){l=/(hant|tw|hk|mo)/.test(v)?"zh-Hant":"zh-Hans";break}if(v.startsWith("ja")){l="ja";break}if(v.startsWith("en")){l="en";break}}}document.documentElement.lang=l;const siteTitle={en:"Zero - Blog","zh-Hant":"零 - Blog","zh-Hans":"零 - Blog",ja:"零 - Blog"};const brand={en:"Zero","zh-Hant":"零","zh-Hans":"零",ja:"零"};const d=JSON.parse(document.getElementById("blog-doc-title").textContent);if(d.site)document.title=siteTitle[l];else{const label=d.titles&&(d.titles[l]||d.titles.en)||d.label;if(label)document.title=label+" - "+brand[l]}}catch{}</script>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Shading - Zero">
+  <meta property="og:description" content="A game developer">
+  <meta property="og:url" content="https://0-rpg.com/blog/categories/Computer-Graphics/Shading/index.html">
+  <meta property="og:image" content="https://0-rpg.com/img/og-portfolio.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/img/icon.webp">
+  <link rel="canonical" href="https://0-rpg.com/blog/categories/Computer-Graphics/Shading/index.html">
+  <link rel="stylesheet" href="/css/blog.css">
+  <link rel="stylesheet" href="/css/katex.min.css">
+  <script src="/js/blog.js" defer></script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body class="blog-page is-list">
+  <a class="skip-link" href="#blog-main" data-blog-i18n="skip">Skip to content</a>
+  <div class="blog-atmosphere" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="blog-header">
+    <a class="blog-brand" href="/blog/" aria-label="Zero — Blog">
+      <strong>零</strong>
+      <small>GAME DEVELOPER / BLOG</small>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a class="personal-home-link" href="/" target="_blank" rel="noreferrer">
+        <span data-blog-i18n="personalHome">Homepage</span>
+        <i class="nav-jump-icon" aria-hidden="true"></i>
+      </a>
+      <button type="button" class="search-open" data-search-open aria-label="Search articles"><i aria-hidden="true"></i><span data-blog-i18n="search">Search</span></button>
+    </nav>
+    <label class="blog-language">
+
+        <select id="blog-locale-select" aria-label="Language">
+          <option value="zh-Hant">繁體中文</option>
+          <option value="zh-Hans">简体中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+        </select>
+    </label>
+  </header>
+
+  <main id="blog-main"><section class="article-index">
+  <header class="article-index-hero has-back">
+    
+      <a class="post-back" href="/blog/"><span aria-hidden="true">←</span><span data-blog-i18n="allArticles">All Articles</span></a>
+    
+    
+    <h1 data-blog-i18n="">Shading</h1>
+    
+  </header>
+
+  <div class="article-index-layout">
+    
+<aside class="blog-sidebar is-empty" aria-hidden="true"></aside>
+
+    <div>
+      
+<div class="article-list">
+  
+    <article class="article-row">
+      <span class="article-index-mark">
+        <span class="article-number">01</span>
+        
+      </span>
+      <span class="article-row-media" aria-hidden="true"><img src="/img/cg/light_falloff/cover.png" alt=""></span>
+      <span class="article-row-main">
+        <div class="article-row-meta">
+          <span><small data-blog-i18n="created">CREATED</small><time datetime="2022-08-28">2022.08.28</time></span>
+          <span><small data-blog-i18n="updated">UPDATED</small><time datetime="2022-08-28">2022.08.28</time></span>
+        </div>
+        <h2><a class="article-row-link" href="/blog/articles/cg/Light-Falloff-Point-Light/"><span class="localized-title" data-title-locale="zh-Hant">點光源的光照衰減</span><span class="localized-title" data-title-locale="zh-Hans">点光源的光照衰减</span><span class="localized-title" data-title-locale="en">Point-Light Falloff</span><span class="localized-title" data-title-locale="ja">点光源の減衰</span>
+</a></h2>
+        
+          <p class="article-row-summary" data-summary-locale="zh-Hant">從能量守恆推導點光源的平方反比衰減公式。</p>
+        
+          <p class="article-row-summary" data-summary-locale="zh-Hans">从能量守恒推导点光源的平方反比衰减公式。</p>
+        
+          <p class="article-row-summary" data-summary-locale="en">Deriving the inverse-square falloff of a point light from conservation of energy.</p>
+        
+          <p class="article-row-summary" data-summary-locale="ja">エネルギー保存則から点光源の逆二乗減衰を導出します。</p>
+        
+      </span>
+      <span class="article-row-read">
+        <span data-blog-i18n="readArticle">READ ARTICLE</span>
+        <i class="nav-jump-icon" aria-hidden="true"></i>
+      </span>
+    </article>
+  
+    <article class="article-row">
+      <span class="article-index-mark">
+        <span class="article-number">02</span>
+        
+      </span>
+      <span class="article-row-media" aria-hidden="true"><img src="/img/cg/lighting_distance/02.png" alt=""></span>
+      <span class="article-row-main">
+        <div class="article-row-meta">
+          <span><small data-blog-i18n="created">CREATED</small><time datetime="2022-08-21">2022.08.21</time></span>
+          <span><small data-blog-i18n="updated">UPDATED</small><time datetime="2022-08-21">2022.08.21</time></span>
+        </div>
+        <h2><a class="article-row-link" href="/blog/articles/cg/lighting-distance/"><span class="localized-title" data-title-locale="zh-Hant">斜射光的表面間距</span><span class="localized-title" data-title-locale="zh-Hans">斜射光的表面间距</span><span class="localized-title" data-title-locale="en">Surface Ray Spacing under Oblique Light</span><span class="localized-title" data-title-locale="ja">斜入射における表面の光線間隔</span>
+</a></h2>
+        
+          <p class="article-row-summary" data-summary-locale="zh-Hant">推導平行光斜射表面時，光線間距如何隨入射角改變</p>
+        
+          <p class="article-row-summary" data-summary-locale="zh-Hans">推导平行光斜射表面时，光线间距如何随入射角变化</p>
+        
+          <p class="article-row-summary" data-summary-locale="en">Deriving how ray spacing changes when parallel light strikes a surface at an oblique angle</p>
+        
+          <p class="article-row-summary" data-summary-locale="ja">平行光が面へ斜めに入射するとき、光線間隔がどう変化するかを導出します</p>
+        
+      </span>
+      <span class="article-row-read">
+        <span data-blog-i18n="readArticle">READ ARTICLE</span>
+        <i class="nav-jump-icon" aria-hidden="true"></i>
+      </span>
+    </article>
+  
+</div>
+
+      
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+  <a class="back-to-top" href="#blog-main" aria-label="Back to top" data-blog-i18n-aria-label="backTop">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m0 0-6 6m6-6 6 6"/></svg>
+  </a>
+  
+  <button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="true">
+    <i class="theme-toggle-knob" aria-hidden="true"></i>
+    <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5z"/></svg>
+  </button>
+
+  <footer class="blog-footer">
+    <span class="footer-name">© <span data-blog-i18n="name">ZERO</span> 2026 All rights reserved.</span>
+    <a class="footer-home" href="/" target="_blank" rel="noreferrer">
+      <span data-blog-i18n="personalHome">Homepage</span>
+      <i class="nav-jump-icon" aria-hidden="true"></i>
+    </a>
+  </footer>
+
+  <dialog class="search-dialog" data-search-dialog>
+    <div class="search-shell">
+      <header>
+        <label for="article-search" data-blog-i18n="searchArticles">SEARCH ARTICLES</label>
+        <button type="button" data-search-close aria-label="Close search" data-blog-i18n-aria-label="close">×</button>
+      </header>
+      <div class="search-field">
+        <input id="article-search" type="search" autocomplete="off" placeholder="Unity, DirectX, rendering…" data-search-input data-blog-i18n-placeholder="searchPlaceholder">
+        <button type="button" class="search-clear" data-search-clear hidden aria-label="Clear" data-blog-i18n-aria-label="clearSearch">×</button>
+      </div>
+      <p class="search-hint" data-blog-i18n="searchHint">Search titles and summaries. Use #tag for tags.</p>
+      <p class="search-status" data-search-status data-blog-i18n="recentArticles">Recent articles</p>
+      <ol class="search-results" data-search-results></ol>
+    </div>
+  </dialog>
+  <script id="search-data" type="application/json">[{"title":"Unity Shader 入門精要筆記","titles":{},"url":"/blog/articles/unity/Unity-Shader%E5%85%A5%E9%96%80%E7%B2%BE%E8%A6%81%E7%AD%86%E8%A8%98/","preview":"/img/unity/unity_shader_introduction.jpg","excerpt":"記錄了在學習《Unity Shader入門精要》時的筆記，也包含了在學習過程中的一些額外練習。有興趣的讀者可以參考。 Github 筆記","summaries":{"zh-Hant":"《Unity Shader 入門精要》的學習筆記與延伸練習整理。","zh-Hans":"《Unity Shader 入门精要》的学习笔记与扩展练习整理。","en":"Chinese-language study notes and supplementary exercises for 《Unity Shader 入門精要》.","ja":"中国語書籍『Unity Shader 入門精要』の学習ノートと追加演習です（本文は中国語のみ）。"},"tags":["unity","shader"],"categories":["Unity"],"date":"2023.05.14"},{"title":"Graphics Programmer Study Guide","titles":{"zh-Hant":"圖形程式設計師學習指南","zh-Hans":"图形程序员学习指南","en":"Graphics Programmer Study Guide","ja":"グラフィックスプログラマー学習ガイド"},"url":"/blog/articles/Graphics-Programmer-Study/","preview":"/img/graphics_programmer_study/rendering_img_01.webp","excerpt":"繁體中文简体中文English日本語學習資源 個人專案 Unity Rendering Playground Unity Shader 入門精要 — 筆記 Algorithm C++ 數學 Thomas’ Calculus MIT 18.06 — Linear Algebra Mathematics for 3D Game Programming and Computer Graphics 3D Math Primer for Graphics and Game Development 程式設計 C++ Primer C# in Depth A Study Path for Game Programmer Real-Time Rendering GAMES Series Fundamentals of Computer Graphics Ray Tracing in One Weekend LearnOpenGL Introduction to 3D Game Programming with DirectX 12 DirectX 12 の魔導書 Unity Unity Graphics Programming Series Unity Shader 入門精要 Unity Performance Tuning Bible 学习资源 个人项目 Unity Rendering Playground Unity Shader 入门精要 — 笔记 Algorithm C++ 数学 Thomas’ Calculus MIT 18.06 — Linear Algebra Mathematics for 3D Game Programming and Computer Graphics 3D Math Primer for Graphics and Game Development 编程 C++ Primer C# in Depth A Study Path for Game Programmer Real-Time Rendering GAMES Series Fundamenta","summaries":{"zh-Hant":"即時渲染與圖形程式設計的學習資源整理。","zh-Hans":"实时渲染与图形编程的学习资源整理。","en":"A curated collection of real-time rendering and graphics programming resources.","ja":"リアルタイムレンダリングとグラフィックスプログラミングの学習資料をまとめています。"},"tags":[],"categories":["Game Dev"],"date":"2023.05.05"},{"title":"Ray-Tracing: Ray Generation","titles":{"zh-Hant":"光線追蹤：射線生成","zh-Hans":"光线追踪：射线生成","en":"Ray Tracing: Ray Generation","ja":"レイトレーシング：レイ生成"},"url":"/blog/articles/cg/ray-tracing/Ray-Tracing-Ray-Generation/","preview":"/img/cg/ray_tracing/cover.webp","excerpt":"繁體中文简体中文English日本語目標是把螢幕像素中心轉成相機空間中的射線方向。假設畫面為 width×heightwidth \\times heightwidth×height、寬高比 A=width/heightA=width/heightA=width/height，投影平面位於 z=−1z=-1z=−1。 加上 0.5 取像素中心，轉換到 [0,1][0,1][0,1]：Xndc=(Xscreen+0.5)/widthX_{ndc}=(X_{screen}+0.5)/widthXndc​=(Xscreen​+0.5)/width、Yndc=(Yscreen+0.5)/heightY_{ndc}=(Y_{screen}+0.5)/heightYndc​=(Yscreen​+0.5)/height 轉換到 [−1,1][-1,1][−1,1]：X=2Xndc−1X=2X_{ndc}-1X=2Xndc​−1、Y=2Yndc−1Y=2Y_{ndc}-1Y=2Yndc​−1 用寬高比修正 XXX 乘上 tan⁡(FOV/2)\\tan(FOV/2)tan(FOV/2)，得到投影平面上的位置 最後射線方向為 (Xfinal,Yfinal,−1)(X_{final},Y_{final},-1)(Xfinal​,Yfinal​,−1)，正規化後即可使用。若要改變觀察方向，再把方向乘上相機旋轉矩陣；方向向量不要套用平移。目标是把屏幕像素中心转换为相机空间中的射线方向。设画面为 width×heightwidth \\times heightwidth×height、宽高比 A=width/heightA=width/heightA=width/height，投影平面位于 z=−1z=-1z=−1。 加上 0.5 取得像素中心，并转换到 [0,1][0,1][0,1] 转换到 [−1,1][-1,1][−1,1] 使用宽高比修正 XXX 乘以 tan⁡(FOV/2)\\tan(FOV/2)tan(FOV/2)，得到投影平面上的位置 最终射线方向为 (Xfinal,Yfinal,−1)(","summaries":{"zh-Hant":"從螢幕像素推導相機空間射線方向，整理 NDC、寬高比與 FOV 的轉換流程。","zh-Hans":"从屏幕像素推导相机空间射线方向，整理 NDC、宽高比与 FOV 的转换流程。","en":"Deriving camera-space ray directions from screen pixels through NDC, aspect-ratio, and FOV transforms.","ja":"画面ピクセルから NDC、アスペクト比、FOV を経てカメラレイを生成する手順です。"},"tags":["ray-tracing"],"categories":["Computer Graphics"],"date":"2022.10.02"},{"title":"Light Falloff(Point Light)","titles":{"zh-Hant":"點光源的光照衰減","zh-Hans":"点光源的光照衰减","en":"Point-Light Falloff","ja":"点光源の減衰"},"url":"/blog/articles/cg/Light-Falloff-Point-Light/","preview":"/img/cg/light_falloff/cover.png","excerpt":"Attenuation of a point light.","summaries":{"zh-Hant":"從能量守恆推導點光源的平方反比衰減公式。","zh-Hans":"从能量守恒推导点光源的平方反比衰减公式。","en":"Deriving the inverse-square falloff of a point light from conservation of energy.","ja":"エネルギー保存則から点光源の逆二乗減衰を導出します。"},"tags":["radiometry"],"categories":["Computer Graphics","Shading"],"date":"2022.08.28"},{"title":"Surface Ray Spacing under Oblique Light","titles":{"zh-Hant":"斜射光的表面間距","zh-Hans":"斜射光的表面间距","en":"Surface Ray Spacing under Oblique Light","ja":"斜入射における表面の光線間隔"},"url":"/blog/articles/cg/lighting-distance/","preview":"/img/cg/lighting_distance/02.png","excerpt":"光線照射到表面時，每一束光線之間的距離計算","summaries":{"zh-Hant":"推導平行光斜射表面時，光線間距如何隨入射角改變","zh-Hans":"推导平行光斜射表面时，光线间距如何随入射角变化","en":"Deriving how ray spacing changes when parallel light strikes a surface at an oblique angle","ja":"平行光が面へ斜めに入射するとき、光線間隔がどう変化するかを導出します"},"tags":["radiometry"],"categories":["Computer Graphics","Shading"],"date":"2022.08.21"},{"title":"Multisampling Anti-Aliasing Introduction","titles":{"zh-Hant":"Multisampling Anti-Aliasing 介紹","zh-Hans":"Multisampling Anti-Aliasing 介绍","en":"Multisampling Anti-Aliasing Introduction","ja":"Multisampling Anti-Aliasing 入門"},"url":"/blog/articles/cg/anti-aliasing/Introduction-of-Multisampling-MSAA/","preview":"/img/cg/msaa/cover.png","excerpt":"繁體中文简体中文English日本語原理 MSAA（Multisampling Anti-Aliasing）與 SSAA 一樣，會在每個像素內增加覆蓋率與深度樣本。差別是：對覆蓋該像素的每個三角形，MSAA 通常只執行一次 Fragment／Pixel Shader，再把結果寫入被該三角形覆蓋的樣本，因此著色成本遠低於 SSAA。 限制與選擇 若三角形內部有明顯漸層，單次著色結果可能無法代表所有樣本，品質會略低於 SSAA。MSAA 仍需要多樣本 Render Target 與 Depth Buffer，但在即時渲染中，它以較低成本提供接近 SSAA 的邊緣品質，因此更常使用。 速度：通常比 SSAA 快 記憶體：多樣本緩衝區的需求與同倍率 SSAA 接近 品質：幾何邊緣很好，但 Shader 內部產生的鋸齒不一定能處理 圖示 參考資料 Supersampling Anti-Aliasing 介紹 原理 MSAA（Multisampling Anti-Aliasing）与 SSAA 一样，会在每个像素内增加覆盖率和深度样本。区别是：对覆盖该像素的每个三角形，MSAA 通常只执行一次 Fragment／Pixel Shader，再把结果写入被该三角形覆盖的样本，因此着色成本远低于 SSAA。 限制与选择 三角形内部存在明显渐变时，单次着色结果可能无法代表所有样本，质量会略低于 SSAA。MSAA 仍需要多样本 Render Target 和 Depth Buffer，但在实时渲染中，它以较低成本提供接近 SSAA 的边缘质量，因此更常使用。 速度：通常比 SSAA 快 内存：多样本缓冲区的需求与同倍率 SSAA 接近 质量：几何边缘很好，但不一定能处理 Shader 内部产生的锯齿 图示 参考资料 Supersampling Anti-Aliasing 介绍 Principle Like SSAA, MSAA (Multisampling Anti-Aliasing) stores several coverage and depth samples per pixel.","summaries":{"zh-Hant":"介紹 MSAA 取樣","zh-Hans":"介绍 MSAA 采样","en":"Introducing MSAA sampling","ja":"MSAA サンプリングの紹介"},"tags":["anti-aliasing"],"categories":["Computer Graphics"],"date":"2022.08.05"},{"title":"Supersampling Anti-Aliasing Introduction","titles":{"zh-Hant":"Supersampling Anti-Aliasing 介紹","zh-Hans":"Supersampling Anti-Aliasing 介绍","en":"Supersampling Anti-Aliasing Introduction","ja":"Supersampling Anti-Aliasing 入門"},"url":"/blog/articles/cg/anti-aliasing/Introducation-of-Supersampling-Anti-Aliasing-SSAA/","preview":"/img/cg/ssaa/cover.png","excerpt":"繁體中文简体中文English日本語原理 SSAA（Supersampling Anti-Aliasing）先以較高解析度渲染，再把多個子像素平均成一個輸出像素。以 4x SSAA 為例，每個輸出像素使用 4 個樣本： pn=∑i=03Pi4p_n = \\frac{\\sum_{i=0}^{3} P_i}{4} pn​=4∑i=03​Pi​​ 提高取樣率後，三角形邊界可以被描述得更精確；縮回原解析度時，邊緣會自然形成平滑的過渡。 著色與成本 SSAA 會對每個子像素執行完整著色與深度測試。若多個三角形覆蓋同一輸出像素，先求出各樣本的可見顏色，再進行平均。因此品質很好，但 4x SSAA 通常也意味著約 4 倍的 Render Target／Depth Buffer 空間，以及接近 4 倍的著色工作量。 圖示 參考資料 Multisampling Anti-Aliasing 介紹 原理 SSAA（Supersampling Anti-Aliasing）先以更高分辨率渲染，再把多个子像素平均成一个输出像素。以 4x SSAA 为例，每个输出像素使用 4 个样本： pn=∑i=03Pi4p_n = \\frac{\\sum_{i=0}^{3} P_i}{4} pn​=4∑i=03​Pi​​ 提高采样率后，三角形边界能够被更准确地描述；缩回原分辨率时，边缘会自然形成平滑过渡。 着色与成本 SSAA 会对每个子像素执行完整着色和深度测试。多个三角形覆盖同一输出像素时，先计算各样本的可见颜色，再进行平均。因此画质很好，但 4x SSAA 通常也需要约 4 倍的 Render Target／Depth Buffer 空间，以及接近 4 倍的着色工作量。 图示 参考资料 Multisampling Anti-Aliasing 介绍 Principle SSAA (Supersampling Anti-Aliasing) renders at a higher resolution and averages several subpixels into one output pixel. Wi","summaries":{"zh-Hant":"介紹 SSAA 取樣","zh-Hans":"介绍 SSAA 采样","en":"Introducing SSAA sampling","ja":"SSAA サンプリングの紹介"},"tags":["anti-aliasing"],"categories":["Computer Graphics"],"date":"2022.08.05"},{"title":"DirectX 12 Multisampling Anti-Aliasing","titles":{"zh-Hant":"DirectX 12：Multisampling Anti-Aliasing","zh-Hans":"DirectX 12：Multisampling Anti-Aliasing","en":"DirectX 12: Multisampling Anti-Aliasing","ja":"DirectX 12：Multisampling Anti-Aliasing"},"url":"/blog/articles/directx/DirectX-12-Multisampling-MSAA/","preview":"/img/dx/msaa/msaa_box.png","excerpt":"繁體中文简体中文English日本語新版 DirectX 12 不應在執行期間切換 Swap Chain 的多重取樣設定。較穩定的做法是建立獨立的多樣本 Render Target 與 Depth Stencil，使用相同 Sample Count 的 Pipeline State，完成繪製後再把結果 Resolve 到一般的 Back Buffer。 建立 SampleDesc.Count = 4 的 MSAA Color Resource 與 RTV 建立相同 Sample Count 的 Depth Resource 與 TEXTURE2DMS DSV 建立 MSAA 專用 PSO，RTV／DSV Format 必須與資源一致 繪製前把 MSAA Color Resource 轉成 RENDER_TARGET 繪製後轉成 RESOLVE_SOURCE，把 Back Buffer 轉成 RESOLVE_DEST，呼叫 ResolveSubresource() 把 Back Buffer 轉回 PRESENT 後顯示 所有資源狀態、Format、Sample Count 與 Sample Quality 都必須配對；硬體支援的 Quality 應先透過 API 查詢。新版 DirectX 12 不应在运行时切换 Swap Chain 的多重采样设置。更稳定的做法是创建独立的多采样 Render Target 和 Depth Stencil，使用相同 Sample Count 的 Pipeline State，绘制完成后再把结果 Resolve 到普通 Back Buffer。 创建 SampleDesc.Count = 4 的 MSAA Color Resource 与 RTV 创建相同 Sample Count 的 Depth Resource 与 TEXTURE2DMS DSV 创建 MSAA 专用 PSO，RTV／DSV Format 必须与资源一致 绘制前把 Color Resource 转换为 RENDER_TARGET 绘制后转换为 RESOLVE_SOU","summaries":{"zh-Hant":"在 DirectX 12 建立多樣本 RTV、DSV 與 PSO，並 Resolve 到 Back Buffer 的完整流程","zh-Hans":"在 DirectX 12 中创建多采样 RTV、DSV 与 PSO，并 Resolve 到 Back Buffer 的完整流程","en":"Creating multisampled RTV, DSV, and PSO resources in DirectX 12 and resolving them into the Back Buffer","ja":"DirectX 12 でマルチサンプル RTV、DSV、PSO を作成し、Back Buffer へ Resolve する流れ"},"tags":["directx","anti-aliasing"],"categories":["DirectX"],"date":"2022.08.05"},{"title":"Compile HLSL with fxc","titles":{"zh-Hant":"使用 fxc 編譯 HLSL","zh-Hans":"使用 fxc 编译 HLSL","en":"Compile HLSL with fxc","ja":"fxc で HLSL をコンパイル"},"url":"/blog/articles/directx/Compile-HLSL-with-fxc/","preview":"/img/dx/fxc/dx_compiler.png","excerpt":"繁體中文简体中文English日本語 環境：Windows 10 / DirectX 12 fxc.exe 隨 Windows SDK 安裝。請先在 Windows Kits 的 bin/&lt;version&gt;/x86 或 x64 目錄確認實際版本，再把該目錄加入 Path。 編譯後，DirectX 程式讀取 .cso 的位元組內容並建立 ID3DBlob。新專案若需要 Shader Model 6 或較新的工具鏈，應改用 DXC；本文保留 fxc 的舊版流程。 环境：Windows 10 / DirectX 12 fxc.exe 随 Windows SDK 安装。先在 Windows Kits 的 bin/&lt;version&gt;/x86 或 x64 目录确认实际版本，再把该目录加入 Path。 编译后，DirectX 程序读取 .cso 的字节内容并创建 ID3DBlob。需要 Shader Model 6 或较新工具链的新项目应改用 DXC；本文保留 fxc 的旧版流程。 Environment: Windows 10 / DirectX 12 fxc.exe is installed with the Windows SDK. Locate the real bin/&lt;version&gt;/x86 or x64 directory in Windows Kits and add it to Path. After compilation, the DirectX application reads the .cso bytes into an ID3DBlob. New projects that require Shader Model 6 or a modern toolchain should use DXC; this article documents the legacy fxc workflow. 環境：Windows 10 / DirectX 12 fxc.exe は Windows SDK と一緒にインストールされます。W","summaries":{"zh-Hant":"使用 Windows SDK 的 fxc 編譯 HLSL，整理常用參數與 DirectX 載入方式。","zh-Hans":"使用 Windows SDK 的 fxc 编译 HLSL，整理常用参数与 DirectX 加载方式。","en":"Compiling HLSL with the Windows SDK fxc tool, including common options and DirectX loading.","ja":"Windows SDK の fxc で HLSL をコンパイルし、主要オプションと DirectX での読み込みを整理します。"},"tags":["hlsl","directx","compile"],"categories":["DirectX"],"date":"2022.07.31"}]</script>
+</body>
+</html>
